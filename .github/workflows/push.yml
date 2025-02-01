@@ -1,0 +1,66 @@
+name: Flip Push Request
+on:
+  push:
+    branches: [main, staging]
+env:
+  BRANCH_NAME: ${{ github.ref_name }}
+jobs:
+  optimize_ci:
+    runs-on: ubuntu-latest
+    outputs:
+      skip: ${{ steps.check_skip.outputs.skip }}
+    steps:
+      - name: Optimize CI
+        id: check_skip
+        uses: withgraphite/graphite-ci-action@main
+
+  Push-Request-Action:
+    needs: optimize_ci
+    if: needs.optimize_ci.outputs.skip == 'false'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout the correct branch
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ env.BRANCH_NAME }}
+
+      - name: Use pnpm v9
+        uses: pnpm/action-setup@v3
+        with:
+          version: 9.14.2
+
+      - name: Use Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20.12.2'
+          cache: 'pnpm'
+
+      - name: Install dependencies
+        run: |
+          cd apps/loco-web
+          touch .env
+          if [ "${{ env.BRANCH_NAME }}" = "main" ]; then
+            echo "${{ secrets.PRODUCTION_ENV }}" > .env
+          elif [ "${{ env.BRANCH_NAME }}" = "staging" ]; then
+            echo "${{ secrets.STAGING_ENV }}" > .env
+          else
+            echo "Unknown branch: ${{ env.BRANCH_NAME }}"
+          fi
+          pnpm install --frozen-lockfile
+
+      - name: Build the code
+        run: |
+          cd apps/loco-web
+          pnpm build
+        env:
+          CI: true
+
+      - name: Deploy to Vercel
+        uses: amondnet/vercel-action@v25.2.0
+        with:
+          vercel-token: ${{ secrets.VERCEL_TOKEN }}
+          vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
+          vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
+          github-token: ${{ secrets.VERCEL_GH_TOKEN }}
+          github-comment: true
+          vercel-args: ${{ github.ref_name == 'main' && '--prod' || '' }}
