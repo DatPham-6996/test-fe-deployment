@@ -1,0 +1,18 @@
+.h-seatmap-full {
+  height: 100%;
+}
+
+@media screen(sm) {
+  .h-seatmap-full {
+    /* 3.5rem is a height of header */
+    /* 1px is the height of the border under header */
+    height: calc(100vh - theme(height[14]) - 1px);
+  }
+}
+
+.transformComponentWrapper,
+.transformComponentContent,
+.transformComponentContent > svg {
+  width: 100% !important;
+  height: 100% !important;
+}

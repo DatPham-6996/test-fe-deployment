@@ -1,0 +1,9 @@
+.recharts-default-legend > li {
+  padding-bottom: 2px; /* Default padding for mobile */
+}
+
+@media only screen and (min-width: 768px) {
+  .recharts-default-legend > li {
+    padding-bottom: 12px; /* Padding for desktop */
+  }
+}
