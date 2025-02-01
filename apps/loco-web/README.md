@@ -1,6 +1,6 @@
 ## Getting Started
 
-Make sure you have `.env.local` file
+Make sure you have `.env.local` filee
 
 **.env.local**
 
