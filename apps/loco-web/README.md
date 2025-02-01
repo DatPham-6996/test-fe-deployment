@@ -10,7 +10,7 @@ Check [here](https://nextjs.org/docs/pages/building-your-application/configuring
 NEXT_PUBLIC_SCHEMA_PATH=http://localhost:3000/api/graphql
 NEXT_PUBLIC_GHN_PATH=https://online-gateway.ghn.vn
 ```
-
+s
 Run commands to start development environment
 
 ```bash
