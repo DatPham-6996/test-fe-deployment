@@ -1,0 +1,42 @@
+version: 1
+frontend:
+  phases:
+    preBuild:
+      commands:
+        - npm install -g pnpm
+        - cd apps/loco-web
+        - pnpm install
+    build:
+      commands:
+        # Create and verify .env file before build
+        - |
+          cat << EOF > .env
+          NEXT_PUBLIC_ENV=$NEXT_PUBLIC_ENV
+          NEXT_PUBLIC_SCHEMA_PATH=$NEXT_PUBLIC_SCHEMA_PATH
+          NEXT_PUBLIC_TICKETING_PATH=$NEXT_PUBLIC_TICKETING_PATH
+          NEXT_PUBLIC_EVENT_PATH=$NEXT_PUBLIC_EVENT_PATH
+          NEXT_PUBLIC_FIREBASE_API_KEY=$NEXT_PUBLIC_FIREBASE_API_KEY
+          NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN=$NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN
+          NEXT_PUBLIC_FIREBASE_PROJECT_ID=$NEXT_PUBLIC_FIREBASE_PROJECT_ID
+          NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET=$NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET
+          NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID=$NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID
+          NEXT_PUBLIC_FIREBASE_APP_ID=$NEXT_PUBLIC_FIREBASE_APP_ID
+          NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID=$NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID
+          NEXT_PUBLIC_STATSIG_KEY=$NEXT_PUBLIC_STATSIG_KEY
+          STATSIG_SERVER_KEY=$STATSIG_SERVER_KEY
+          NEXT_PUBLIC_GHN_TOKEN=$NEXT_PUBLIC_GHN_TOKEN
+          NEXT_PUBLIC_GHN_PATH=$NEXT_PUBLIC_GHN_PATH
+          NEXT_PUBLIC_XENDIT_PUBLIC_KEY=$NEXT_PUBLIC_XENDIT_PUBLIC_KEY
+          NEXT_PUBLIC_XENDIT_CARD_AUTHENTICATION_CALLBACK_URL=$NEXT_PUBLIC_XENDIT_CARD_AUTHENTICATION_CALLBACK_URL
+          NEXT_PUBLIC_GMAP_KEY=$NEXT_PUBLIC_GMAP_KEY
+          EOF
+        - cat .env
+        - test -f .env || { echo ".env file not found"; exit 1; }
+        - pnpm build
+  artifacts:
+    baseDirectory: dist
+    files:
+      - "**/*"
+  cache:
+    paths:
+      - node_modules/**/*
