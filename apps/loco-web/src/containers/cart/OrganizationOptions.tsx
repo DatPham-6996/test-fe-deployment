@@ -4,7 +4,6 @@ import {
   useGetOrCreateOfflineSaleCodeLazyQuery,
   useOrganizationCheckoutConfigsQuery,
 } from '@/lib/__generated__/graphql';
-import { postApplyDiscount, postRemoveDiscount } from '@/lib/api/flip-ticketing/v1/applyDiscount';
 import { DiscountCodeType } from '@/lib/utils/constants';
 import { toastError } from '@/lib/utils/toast';
 import { type Cart } from '@medusajs/medusa';
@@ -12,6 +11,7 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@radix
 import { useGateValue } from '@statsig/react-bindings';
 import classNames from 'classnames';
 import { InfoIcon, MailPlus } from 'lucide-react';
+import { useUpdateCart } from 'medusa-react';
 import { useEffect, useState } from 'react';
 import { useIntl } from 'react-intl';
 
@@ -32,6 +32,7 @@ export default function OrganizationOptions({
   const isFeatureEnable = useGateValue('organization-checkout-option');
   const [isSubmitting, setIsSubmitting] = useState(true);
   const [isAppliedDiscount, setIsAppliedDiscount] = useState(true);
+  const updateCart = useUpdateCart(cart?.id);
   const [getOrCreateOfflineSaleCode] = useGetOrCreateOfflineSaleCodeLazyQuery();
   const { data: organizationCheckoutConfigData } = useOrganizationCheckoutConfigsQuery({
     variables: { input: { eventId, organizationId } },
@@ -57,24 +58,46 @@ export default function OrganizationOptions({
         throw new Error('Offline sale code is not available');
       }
 
-      await postApplyDiscount(cart.id, offlineSaleCode);
-      refetchCart();
+      updateCart.mutate(
+        {
+          discounts: [
+            {
+              code: offlineSaleCode,
+            },
+          ],
+        },
+        {
+          onSuccess: () => {
+            refetchCart();
+          },
+          onError: () => {
+            toastError(`${formatMessage({ id: 'checkout.organizationOptions.offlineSale.error' })}`);
+            setIsSubmitting(false);
+          },
+        }
+      );
     } catch (error) {
       toastError(`${formatMessage({ id: 'checkout.organizationOptions.offlineSale.error' })}`);
       setIsSubmitting(false);
     }
   };
 
-  const onRemoveOfflineSaleCode = async () => {
+  const onRemoveOfflineSaleCode = () => {
     setIsSubmitting(true);
-
-    try {
-      await postRemoveDiscount(cart.id);
-      refetchCart();
-    } catch (error) {
-      toastError(`${formatMessage({ id: 'checkout.organizationOptions.offlineSale.error' })}`);
-      setIsSubmitting(false);
-    }
+    updateCart.mutate(
+      {
+        discounts: [],
+      },
+      {
+        onSuccess: () => {
+          refetchCart();
+        },
+        onError: () => {
+          toastError(`${formatMessage({ id: 'checkout.discount.removeDiscountFailure' })}`);
+          setIsSubmitting(false);
+        },
+      }
+    );
   };
 
   useEffect(() => {
@@ -122,6 +145,30 @@ export default function OrganizationOptions({
         <TooltipContent>
           <Card className="">
             <p className="px-3">{formatMessage({ id: 'checkout.organizationOptions.infoTooltip.availableFor' })}</p>
+          </Card>
+        </TooltipContent>
+      </Tooltip>
+    </TooltipProvider>
+  );
+
+  const renderOfflineSaleTooltip = () => (
+    <TooltipProvider>
+      <Tooltip>
+        <TooltipTrigger>
+          <InfoIcon size={16} />
+        </TooltipTrigger>
+        <TooltipContent>
+          <Card>
+            <div className="px-5">
+              <p className="">{formatMessage({ id: 'checkout.organizationOptions.offlineSale.availableFor' })}</p>
+              <ul className="list-disc pl-5">
+                <li>{formatMessage({ id: 'checkout.organizationOptions.offlineSale.outsideFlip' })}</li>
+                <li>{formatMessage({ id: 'checkout.organizationOptions.offlineSale.invitation' })}</li>
+              </ul>
+              <p className="text-sm pt-2">
+                {formatMessage({ id: 'checkout.organizationOptions.offlineSale.feeNote' })}
+              </p>
+            </div>
           </Card>
         </TooltipContent>
       </Tooltip>

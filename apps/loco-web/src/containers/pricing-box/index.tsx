@@ -1,5 +1,5 @@
 import { InfoStar } from '@/components/icon';
-import { LongOperationButton } from '@/components/button/long-operation-button';
+import { Button } from '@/components/shadcn/ui/button';
 import { cn } from '@/lib/utils';
 import { formatPrice } from '@/lib/utils/format';
 import { useSeatReservationCheckOut } from '@/state-management/hooks/useSeatReservationCheckOut';
@@ -7,6 +7,7 @@ import { totalPriceSelector } from '@/state-management/price/selectors/total-pri
 import { selectedEntitiesState } from '@/state-management/seatmap/atoms/selected-entities-state';
 import { selectedSeatsState } from '@/state-management/seatmap/atoms/selected-seats-state';
 import classNames from 'classnames';
+import { useState } from 'react';
 import { useIntl } from 'react-intl';
 import { useRecoilValue } from 'recoil';
 
@@ -19,23 +20,15 @@ export default function PricingBoxContainer({ eventId }: PricingBoxContainerProp
   const selectedEntities = useRecoilValue(selectedEntitiesState(eventId));
   const selectedSeats = useRecoilValue(selectedSeatsState(eventId));
   const { toCheckout } = useSeatReservationCheckOut();
+  const [submitting, setSubmitting] = useState(false);
   const { formatMessage } = useIntl();
 
-  const handleReservation = async () => {
-    await toCheckout(selectedEntities, selectedSeats, eventId);
-  };
-
-  const dialogContent = {
-    initial: {
-      title: formatMessage({ id: 'seatReservation.confirmLoading.initial.title' }),
-      message: formatMessage({ id: 'seatReservation.confirmLoading.initial.message' }),
-      subtitle: formatMessage({ id: 'seatReservation.confirmLoading.initial.subtitle' }),
-    },
-    error: {
-      title: formatMessage({ id: 'seatReservation.confirmLoading.error.title' }),
-      message: formatMessage({ id: 'seatReservation.confirmLoading.error.message' }),
-      retry: formatMessage({ id: 'seatReservation.confirmLoading.error.retry' }),
-    },
+  const onClick = () => {
+    // Check if selected seats are good seats
+    // console.log('selectedEntities', selectedEntities);
+    // console.log('selectedSeats', selectedSeats);
+    // return;
+    toCheckout(selectedEntities, selectedSeats, eventId, setSubmitting);
   };
 
   return (
@@ -59,16 +52,14 @@ export default function PricingBoxContainer({ eventId }: PricingBoxContainerProp
           </div>
         </div>
         <div className="flex items-center w-full">
-          <LongOperationButton
-            operation={handleReservation}
+          <Button
             disabled={selectedEntities.length === 0}
             className={classNames('w-full')}
-            dialogContent={dialogContent}
-            timeoutDuration={30000} // 30 seconds timeout
-            initialDelay={3000} // Only show after 3 seconds
+            onClick={onClick}
+            loading={submitting}
           >
             {formatMessage({ id: 'reservation.pricingBox.continue' })}
-          </LongOperationButton>
+          </Button>
         </div>
       </div>
     </div>

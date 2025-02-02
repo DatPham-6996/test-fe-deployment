@@ -59,9 +59,14 @@ const PARENT_EVENT_QUERY = gql`
 const createParserOptions = (imgAlt: string): HTMLReactParserOptions => ({
   replace: (domNode: any) => {
     if (domNode.name === 'img' && domNode.attribs) {
-      return <ZoomableImage src={domNode.attribs.src} alt={domNode.attribs.alt || imgAlt} />;
+      return (
+        <ZoomableImage
+          src={domNode.attribs.src}
+          alt={domNode.attribs.alt || imgAlt}
+        />
+      );
     }
-  },
+  }
 });
 
 export default function EventDetails() {
@@ -266,7 +271,6 @@ export default function EventDetails() {
                         maxPrice={ticketTiers[0].price}
                         isOnSale={isOnSale}
                         isUpcoming={isUpcoming}
-                        hasWaitingRoom={data?.parentEvent?.hasWaitingRoom === true}
                       />
                     )
                   )}
@@ -278,7 +282,9 @@ export default function EventDetails() {
                 <CardHeader title={formatMessage({ id: 'eventDetail.aboutEvent' })} icon={<Theater size={18} />} />
                 <Separator orientation="horizontal" />
                 <CardBody>
-                  <div className="mt-2">{description ? parse(description, parserOptions) : 'Không có mô tả'}</div>
+                  <div className="mt-2">
+                    {description ? parse(description, parserOptions) : 'Không có mô tả'}
+                  </div>
                 </CardBody>
               </Card>
             </div>

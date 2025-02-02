@@ -22,10 +22,6 @@ export function useLogEvent() {
       const platform = 'web';
       const referrer = document.referrer || getPreviousPage();
       const page = window.location.href;
-      const statsigUrl = process.env.NEXT_PUBLIC_STAT_URL;
-      if (!statsigUrl) {
-        return;
-      }
 
       try {
         statsigLogEvent(eventName, value, {
@@ -44,7 +40,7 @@ export function useLogEvent() {
       try {
         const { stableID } = statsigClient.getContext();
 
-        axios.post(`${statsigUrl}/tracking-events`, {
+        axios.post(`${process.env.NEXT_PUBLIC_STAT_URL}/tracking-events`, {
           events: [
             {
               page,

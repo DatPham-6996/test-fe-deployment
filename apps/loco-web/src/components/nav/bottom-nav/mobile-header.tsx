@@ -1,7 +1,7 @@
-import { FlipLogo } from '@/components/icon/FlipLogo';
 import { Settings } from '@/components/settings/settings';
 import { cn } from '@/lib/utils';
 import { useIsDarkTheme } from '@/state-management/hooks/useIsDarkMode';
+import Image from 'next/image';
 import Link from 'next/link';
 import { HeaderProps } from '../header/Header';
 import { ProfileDropdown } from '../header/ProfileDropdown';
@@ -41,7 +41,12 @@ export default function MobileHeader({
 
           <Item>
             <Link href={'/'}>
-              <FlipLogo width={60} height={60} />
+              <Image
+                src={isDarkMode ? '/icons/flip-dark.png' : '/icons/flip-light.png'}
+                alt="flip logo"
+                width={60}
+                height={60}
+              />
             </Link>
           </Item>
         </div>

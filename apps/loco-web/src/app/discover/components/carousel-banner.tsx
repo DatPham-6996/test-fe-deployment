@@ -33,7 +33,6 @@ export default function CarouselBanner({ banners }: Props) {
                       src={banner.img}
                       alt={'banner'}
                       fill
-                      priority
                       className="relative z-10 rounded-lg drop-shadow-xl transition-transform duration-500 ease-out group-hover/banner:scale-110"
                       style={{ objectFit: 'contain' }}
                     />

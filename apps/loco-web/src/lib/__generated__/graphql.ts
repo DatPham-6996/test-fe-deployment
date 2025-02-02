@@ -54,15 +54,6 @@ export type Activity = {
   verb: Scalars['String']['output'];
 };
 
-export type AddCardInvoiceInput = {
-  address: Scalars['String']['input'];
-  cartId: Scalars['ID']['input'];
-  email: Scalars['String']['input'];
-  name: Scalars['String']['input'];
-  phone: Scalars['String']['input'];
-  taxCode?: InputMaybe<Scalars['String']['input']>;
-};
-
 export type Add_On_ServiceListRelationFilter = {
   every?: InputMaybe<Add_On_ServiceWhereInput>;
   none?: InputMaybe<Add_On_ServiceWhereInput>;
@@ -1508,7 +1499,6 @@ export type FlipCheckoutConfig = {
   event?: Maybe<FlipEvent>;
   eventId?: Maybe<Scalars['String']['output']>;
   id: Scalars['ID']['output'];
-  invoiceEnabled: Scalars['Boolean']['output'];
   offlineSalesEnabled: Scalars['Boolean']['output'];
   organization?: Maybe<FlipOrganization>;
   organizationId?: Maybe<Scalars['String']['output']>;
@@ -1534,7 +1524,6 @@ export type FlipCheckoutConfigWhereInput = {
   event?: InputMaybe<FlipEventNullableRelationFilter>;
   eventId?: InputMaybe<StringNullableFilter>;
   id?: InputMaybe<StringFilter>;
-  invoiceEnabled?: InputMaybe<BoolFilter>;
   offlineSalesEnabled?: InputMaybe<BoolFilter>;
   organization?: InputMaybe<FlipOrganizationNullableRelationFilter>;
   organizationId?: InputMaybe<StringNullableFilter>;
@@ -1704,7 +1693,6 @@ export type FlipEvent = {
   endAt: Scalars['DateTime']['output'];
   handle: Scalars['String']['output'];
   hasSeatMap: Scalars['Boolean']['output'];
-  hasWaitingRoom: Scalars['Boolean']['output'];
   id: Scalars['ID']['output'];
   isGeneralAdmission: Scalars['Boolean']['output'];
   isMultipleDay: Scalars['Boolean']['output'];
@@ -1778,7 +1766,6 @@ export type FlipEventOrderByWithRelationInput = {
   endAt?: InputMaybe<SortOrder>;
   handle?: InputMaybe<SortOrder>;
   hasSeatMap?: InputMaybe<SortOrder>;
-  hasWaitingRoom?: InputMaybe<SortOrder>;
   id?: InputMaybe<SortOrder>;
   isGeneralAdmission?: InputMaybe<SortOrder>;
   isMultipleDay?: InputMaybe<SortOrder>;
@@ -1829,7 +1816,6 @@ export type FlipEventWhereInput = {
   endAt?: InputMaybe<DateTimeFilter>;
   handle?: InputMaybe<StringFilter>;
   hasSeatMap?: InputMaybe<BoolFilter>;
-  hasWaitingRoom?: InputMaybe<BoolFilter>;
   id?: InputMaybe<StringFilter>;
   isGeneralAdmission?: InputMaybe<BoolFilter>;
   isMultipleDay?: InputMaybe<BoolFilter>;
@@ -1875,7 +1861,6 @@ export type FlipEventWhereUniqueInput = {
   endAt?: InputMaybe<DateTimeFilter>;
   handle?: InputMaybe<Scalars['String']['input']>;
   hasSeatMap?: InputMaybe<BoolFilter>;
-  hasWaitingRoom?: InputMaybe<BoolFilter>;
   id?: InputMaybe<Scalars['String']['input']>;
   isGeneralAdmission?: InputMaybe<BoolFilter>;
   isMultipleDay?: InputMaybe<BoolFilter>;
@@ -3203,10 +3188,6 @@ export type GetBalanceTransactionsResponse = {
   pageInfo: PageInfo;
 };
 
-export type GetCartInvoiceInput = {
-  cartId: Scalars['ID']['input'];
-};
-
 export type GetDiscountsInput = {
   cursor?: InputMaybe<FindManyIdCursorInput>;
   eventId: Scalars['ID']['input'];
@@ -3269,7 +3250,6 @@ export type GetEventOrderFinancialSummaryResponse = {
 export type GetEventSeatMapResponse = {
   __typename?: 'GetEventSeatMapResponse';
   gaSectionInventory: Scalars['JSON']['output'];
-  gaSectionReserving: Scalars['JSON']['output'];
   heldSeats: Array<Scalars['String']['output']>;
   reservingSeats: Array<Scalars['String']['output']>;
   seatMapUrl: Scalars['String']['output'];
@@ -3436,7 +3416,6 @@ export type GetOrderDetailsResponse = {
   event?: Maybe<FlipEvent>;
   eventId: Scalars['ID']['output'];
   fee?: Maybe<Scalars['Int']['output']>;
-  invoice?: Maybe<Invoice>;
   name?: Maybe<Scalars['String']['output']>;
   orderDisplayId?: Maybe<Scalars['String']['output']>;
   orderId?: Maybe<Scalars['String']['output']>;
@@ -3496,7 +3475,6 @@ export type GetOrdersResponseOrder = {
   discountTotal: Scalars['Int']['output'];
   event: FlipEvent;
   feeTotal: Scalars['Int']['output'];
-  invoice?: Maybe<Invoice>;
   isCheckInAllowed: Scalars['Boolean']['output'];
   isRefundable: Scalars['Boolean']['output'];
   items: Array<GetOrdersResponseItem>;
@@ -3526,7 +3504,6 @@ export type GetOrganizationCheckoutConfigsInput = {
 
 export type GetOrganizationCheckoutConfigsResponse = {
   __typename?: 'GetOrganizationCheckoutConfigsResponse';
-  invoiceEnabled: Scalars['Boolean']['output'];
   isShowCheckoutOptions: Scalars['Boolean']['output'];
   offlineSalesEnabled: Scalars['Boolean']['output'];
 };
@@ -3885,11 +3862,6 @@ export type InvitedUser = {
   profileImageURL?: Maybe<Scalars['String']['output']>;
 };
 
-export type InvoiceNullableRelationFilter = {
-  is?: InputMaybe<InvoiceWhereInput>;
-  isNot?: InputMaybe<InvoiceWhereInput>;
-};
-
 export type JsonFilter = {
   array_contains?: InputMaybe<Scalars['JSON']['input']>;
   array_ends_with?: InputMaybe<Scalars['JSON']['input']>;
@@ -4004,7 +3976,6 @@ export type Mutation = {
   acceptInvite: FlipInvite;
   acceptPayoutRequest: Payout;
   acceptRefundRequest: Refund;
-  addCartInvoice: Invoice;
   cancelEventInvite: FlipInvite;
   cancelOrganizationInvite: FlipInvite;
   cancelPayoutRequest: Payout;
@@ -4047,9 +4018,7 @@ export type Mutation = {
   markUserEmailAsVerified: Scalars['String']['output'];
   /** Publish events by super admin */
   publishEvents: Array<Scalars['String']['output']>;
-  removeCartInvoice: Invoice;
   requestOrderReport: RequestReportResponse;
-  requestOrganizationInvoiceReport: RequestReportResponse;
   requestOrganizationPayoutReport: RequestReportResponse;
   requestPayoutReport: RequestReportResponse;
   requestRefund: Order;
@@ -4088,11 +4057,6 @@ export type MutationAcceptPayoutRequestArgs = {
 
 export type MutationAcceptRefundRequestArgs = {
   input: AcceptRefundRequestInput;
-};
-
-
-export type MutationAddCartInvoiceArgs = {
-  input: AddCardInvoiceInput;
 };
 
 
@@ -4256,18 +4220,8 @@ export type MutationPublishEventsArgs = {
 };
 
 
-export type MutationRemoveCartInvoiceArgs = {
-  input: RemoveCartInvoiceInput;
-};
-
-
 export type MutationRequestOrderReportArgs = {
   input: RequestOrderReportInput;
-};
-
-
-export type MutationRequestOrganizationInvoiceReportArgs = {
-  input: RequestOrganizationInvoiceReportInput;
 };
 
 
@@ -4410,7 +4364,6 @@ export type MyInvitesEventInfo = {
   endAt?: Maybe<Scalars['DateTime']['output']>;
   handle?: Maybe<Scalars['String']['output']>;
   hasSeatMap?: Maybe<Scalars['Boolean']['output']>;
-  hasWaitingRoom?: Maybe<Scalars['Boolean']['output']>;
   id?: Maybe<Scalars['ID']['output']>;
   isGeneralAdmission?: Maybe<Scalars['Boolean']['output']>;
   isMultipleDay?: Maybe<Scalars['Boolean']['output']>;
@@ -4478,11 +4431,9 @@ export type MyOrders = {
   createdAt: Scalars['DateTime']['output'];
   event?: Maybe<FlipEvent>;
   eventId: Scalars['ID']['output'];
-  invoice?: Maybe<Invoice>;
   orderDisplayId?: Maybe<Scalars['String']['output']>;
   orderId?: Maybe<Scalars['String']['output']>;
   payment?: Maybe<PaymentData>;
-  status?: Maybe<Scalars['String']['output']>;
   ticketCount: Scalars['Int']['output'];
   ticketTiers?: Maybe<Array<PurchasedTicketTier>>;
   total: Scalars['Int']['output'];
@@ -5528,7 +5479,6 @@ export type Query = {
   /** Get all artists */
   artists: Array<FlipArtist>;
   balanceTransactions: GetBalanceTransactionsResponse;
-  cartInvoice?: Maybe<Invoice>;
   currentUser: FlipUser;
   discounts: GetDiscountsResponse;
   /** Get event by handle */
@@ -5625,11 +5575,6 @@ export type QueryArtistArgs = {
 
 export type QueryBalanceTransactionsArgs = {
   input: GetBalanceTransactionsInput;
-};
-
-
-export type QueryCartInvoiceArgs = {
-  input: GetCartInvoiceInput;
 };
 
 
@@ -5987,10 +5932,6 @@ export type Region_Payment_ProvidersListRelationFilter = {
   some?: InputMaybe<Region_Payment_ProvidersWhereInput>;
 };
 
-export type RemoveCartInvoiceInput = {
-  cartId: Scalars['ID']['input'];
-};
-
 /** This model has been renamed to 'Renamedreturn' during introspection, because the original name 'return' is reserved. */
 export type Renamedreturn = {
   __typename?: 'Renamedreturn';
@@ -6084,12 +6025,6 @@ export type ReportStatusResponse = {
 export type RequestOrderReportInput = {
   eventId: Scalars['ID']['input'];
   organizationId: Scalars['ID']['input'];
-};
-
-export type RequestOrganizationInvoiceReportInput = {
-  from: Scalars['DateTime']['input'];
-  organizationId: Scalars['ID']['input'];
-  to: Scalars['DateTime']['input'];
 };
 
 export type RequestOrganizationPayoutReportInput = {
@@ -6591,7 +6526,6 @@ export type UpsertEventSeatMapInput = {
 
 export type UpsertOrganizationCheckoutConfigsInput = {
   eventId: Scalars['ID']['input'];
-  invoiceEnabled: Scalars['Boolean']['input'];
   offlineSalesEnabled: Scalars['Boolean']['input'];
   organizationId: Scalars['ID']['input'];
 };
@@ -6864,8 +6798,6 @@ export type Cart = {
   email?: Maybe<Scalars['String']['output']>;
   id: Scalars['ID']['output'];
   idempotency_key?: Maybe<Scalars['String']['output']>;
-  invoice?: Maybe<Invoice>;
-  invoice_id?: Maybe<Scalars['String']['output']>;
   line_item?: Maybe<Array<Line_Item>>;
   metadata?: Maybe<Scalars['JSON']['output']>;
   order?: Maybe<Order>;
@@ -6910,8 +6842,6 @@ export type CartWhereInput = {
   email?: InputMaybe<StringNullableFilter>;
   id?: InputMaybe<StringFilter>;
   idempotency_key?: InputMaybe<StringNullableFilter>;
-  invoice?: InputMaybe<InvoiceNullableRelationFilter>;
-  invoice_id?: InputMaybe<StringNullableFilter>;
   line_item?: InputMaybe<Line_ItemListRelationFilter>;
   metadata?: InputMaybe<JsonNullableFilter>;
   order?: InputMaybe<OrderNullableRelationFilter>;
@@ -7933,36 +7863,6 @@ export type ImageWhereInput = {
   url?: InputMaybe<StringFilter>;
 };
 
-export type Invoice = {
-  __typename?: 'invoice';
-  address: Scalars['String']['output'];
-  cart?: Maybe<Cart>;
-  created_at: Scalars['DateTime']['output'];
-  email: Scalars['String']['output'];
-  id: Scalars['ID']['output'];
-  name: Scalars['String']['output'];
-  order?: Maybe<Order>;
-  phone: Scalars['String']['output'];
-  tax_code?: Maybe<Scalars['String']['output']>;
-  updated_at: Scalars['DateTime']['output'];
-};
-
-export type InvoiceWhereInput = {
-  AND?: InputMaybe<Array<InvoiceWhereInput>>;
-  NOT?: InputMaybe<Array<InvoiceWhereInput>>;
-  OR?: InputMaybe<Array<InvoiceWhereInput>>;
-  address?: InputMaybe<StringFilter>;
-  cart?: InputMaybe<CartNullableRelationFilter>;
-  created_at?: InputMaybe<DateTimeFilter>;
-  email?: InputMaybe<StringFilter>;
-  id?: InputMaybe<StringFilter>;
-  name?: InputMaybe<StringFilter>;
-  order?: InputMaybe<OrderNullableRelationFilter>;
-  phone?: InputMaybe<StringFilter>;
-  tax_code?: InputMaybe<StringNullableFilter>;
-  updated_at?: InputMaybe<DateTimeFilter>;
-};
-
 /** This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info. */
 export type Line_Item = {
   __typename?: 'line_item';
@@ -8231,8 +8131,6 @@ export type Order = {
   gift_card_transaction?: Maybe<Array<Gift_Card_Transaction>>;
   id: Scalars['ID']['output'];
   idempotency_key?: Maybe<Scalars['String']['output']>;
-  invoice?: Maybe<Invoice>;
-  invoice_id?: Maybe<Scalars['String']['output']>;
   line_item?: Maybe<Array<Line_Item>>;
   metadata?: Maybe<Scalars['JSON']['output']>;
   no_notification?: Maybe<Scalars['Boolean']['output']>;
@@ -8288,8 +8186,6 @@ export type OrderWhereInput = {
   gift_card_transaction?: InputMaybe<Gift_Card_TransactionListRelationFilter>;
   id?: InputMaybe<StringFilter>;
   idempotency_key?: InputMaybe<StringNullableFilter>;
-  invoice?: InputMaybe<InvoiceNullableRelationFilter>;
-  invoice_id?: InputMaybe<StringNullableFilter>;
   line_item?: InputMaybe<Line_ItemListRelationFilter>;
   metadata?: InputMaybe<JsonNullableFilter>;
   no_notification?: InputMaybe<BoolNullableFilter>;
@@ -10195,14 +10091,14 @@ export type EventDetailsQueryVariables = Exact<{
 }>;
 
 
-export type EventDetailsQuery = { __typename?: 'Query', event: { __typename?: 'FlipEvent', id: string, handle: string, createdAt: any, updatedAt: any, name: string, description?: string | null, startAt: any, endAt: any, onsale?: any | null, offsale?: any | null, isOnSale: boolean, policy?: string | null, mediaCollection?: any | null, hasSeatMap: boolean, hasWaitingRoom: boolean, maxTicketPerOrder?: number | null, status: EventStatus, isMultipleDay: boolean, address?: { __typename?: 'FlipAddress', address?: string | null, city?: string | null, longitude?: string | null, latitude?: string | null, zip?: string | null } | null, venue?: { __typename?: 'FlipVenue', name: string } | null, organization: { __typename?: 'FlipOrganization', id: string, handle: string, name: string, description?: string | null, logoURL?: string | null, contactEmail?: string | null }, media?: Array<{ __typename?: 'FlipMedia', id: string, type: MediaType, url: string }> | null, parentEvent?: { __typename?: 'FlipEvent', id: string } | null } };
+export type EventDetailsQuery = { __typename?: 'Query', event: { __typename?: 'FlipEvent', id: string, handle: string, createdAt: any, updatedAt: any, name: string, description?: string | null, startAt: any, endAt: any, onsale?: any | null, offsale?: any | null, isOnSale: boolean, policy?: string | null, mediaCollection?: any | null, hasSeatMap: boolean, maxTicketPerOrder?: number | null, status: EventStatus, isMultipleDay: boolean, address?: { __typename?: 'FlipAddress', address?: string | null, city?: string | null, longitude?: string | null, latitude?: string | null, zip?: string | null } | null, venue?: { __typename?: 'FlipVenue', name: string } | null, organization: { __typename?: 'FlipOrganization', id: string, handle: string, name: string, description?: string | null, logoURL?: string | null, contactEmail?: string | null }, media?: Array<{ __typename?: 'FlipMedia', id: string, type: MediaType, url: string }> | null, parentEvent?: { __typename?: 'FlipEvent', id: string } | null } };
 
 export type ParentEventQueryVariables = Exact<{
   handle: Scalars['String']['input'];
 }>;
 
 
-export type ParentEventQuery = { __typename?: 'Query', parentEvent: { __typename?: 'FlipEvent', id: string, handle: string, createdAt: any, updatedAt: any, name: string, description?: string | null, startAt: any, endAt: any, onsale?: any | null, offsale?: any | null, isOnSale: boolean, policy?: string | null, mediaCollection?: any | null, hasSeatMap: boolean, hasWaitingRoom: boolean, maxTicketPerOrder?: number | null, status: EventStatus, isMultipleDay: boolean, address?: { __typename?: 'FlipAddress', address?: string | null, city?: string | null, longitude?: string | null, latitude?: string | null, zip?: string | null } | null, venue?: { __typename?: 'FlipVenue', name: string } | null, organization: { __typename?: 'FlipOrganization', id: string, handle: string, name: string, description?: string | null, logoURL?: string | null, contactEmail?: string | null }, media?: Array<{ __typename?: 'FlipMedia', id: string, type: MediaType, url: string }> | null, parentEvent?: { __typename?: 'FlipEvent', id: string } | null } };
+export type ParentEventQuery = { __typename?: 'Query', parentEvent: { __typename?: 'FlipEvent', id: string, handle: string, createdAt: any, updatedAt: any, name: string, description?: string | null, startAt: any, endAt: any, onsale?: any | null, offsale?: any | null, isOnSale: boolean, policy?: string | null, mediaCollection?: any | null, hasSeatMap: boolean, maxTicketPerOrder?: number | null, status: EventStatus, isMultipleDay: boolean, address?: { __typename?: 'FlipAddress', address?: string | null, city?: string | null, longitude?: string | null, latitude?: string | null, zip?: string | null } | null, venue?: { __typename?: 'FlipVenue', name: string } | null, organization: { __typename?: 'FlipOrganization', id: string, handle: string, name: string, description?: string | null, logoURL?: string | null, contactEmail?: string | null }, media?: Array<{ __typename?: 'FlipMedia', id: string, type: MediaType, url: string }> | null, parentEvent?: { __typename?: 'FlipEvent', id: string } | null } };
 
 export type GetMyCardsQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -10262,9 +10158,9 @@ export type OrderCard_EventFragment = { __typename?: 'FlipEvent', id: string, ha
 
 export type EventCard_EventFragment = { __typename?: 'FlipEvent', id: string, handle: string, name: string, startAt: any, endAt: any, isOnSale: boolean, onsale?: any | null, offsale?: any | null, status: EventStatus, mediaCollection?: any | null, address?: { __typename?: 'FlipAddress', address?: string | null, city?: string | null, longitude?: string | null, latitude?: string | null, zip?: string | null } | null, venue?: { __typename?: 'FlipVenue', name: string } | null, organization: { __typename?: 'FlipOrganization', id: string, name: string, description?: string | null, logoURL?: string | null }, tickets?: Array<{ __typename?: 'FlipTicket', id: string }> | null, media?: Array<{ __typename?: 'FlipMedia', id: string, type: MediaType, url: string }> | null };
 
-export type EventDetails_EventFragment = { __typename?: 'FlipEvent', id: string, handle: string, createdAt: any, updatedAt: any, name: string, description?: string | null, startAt: any, endAt: any, onsale?: any | null, offsale?: any | null, isOnSale: boolean, policy?: string | null, mediaCollection?: any | null, hasSeatMap: boolean, hasWaitingRoom: boolean, maxTicketPerOrder?: number | null, status: EventStatus, isMultipleDay: boolean, address?: { __typename?: 'FlipAddress', address?: string | null, city?: string | null, longitude?: string | null, latitude?: string | null, zip?: string | null } | null, venue?: { __typename?: 'FlipVenue', name: string } | null, organization: { __typename?: 'FlipOrganization', id: string, handle: string, name: string, description?: string | null, logoURL?: string | null, contactEmail?: string | null }, media?: Array<{ __typename?: 'FlipMedia', id: string, type: MediaType, url: string }> | null, parentEvent?: { __typename?: 'FlipEvent', id: string } | null };
+export type EventDetails_EventFragment = { __typename?: 'FlipEvent', id: string, handle: string, createdAt: any, updatedAt: any, name: string, description?: string | null, startAt: any, endAt: any, onsale?: any | null, offsale?: any | null, isOnSale: boolean, policy?: string | null, mediaCollection?: any | null, hasSeatMap: boolean, maxTicketPerOrder?: number | null, status: EventStatus, isMultipleDay: boolean, address?: { __typename?: 'FlipAddress', address?: string | null, city?: string | null, longitude?: string | null, latitude?: string | null, zip?: string | null } | null, venue?: { __typename?: 'FlipVenue', name: string } | null, organization: { __typename?: 'FlipOrganization', id: string, handle: string, name: string, description?: string | null, logoURL?: string | null, contactEmail?: string | null }, media?: Array<{ __typename?: 'FlipMedia', id: string, type: MediaType, url: string }> | null, parentEvent?: { __typename?: 'FlipEvent', id: string } | null };
 
-export type ParentEventDetails_EventFragment = { __typename?: 'FlipEvent', id: string, handle: string, createdAt: any, updatedAt: any, name: string, description?: string | null, startAt: any, endAt: any, onsale?: any | null, offsale?: any | null, isOnSale: boolean, policy?: string | null, mediaCollection?: any | null, hasSeatMap: boolean, hasWaitingRoom: boolean, maxTicketPerOrder?: number | null, status: EventStatus, isMultipleDay: boolean, address?: { __typename?: 'FlipAddress', address?: string | null, city?: string | null, longitude?: string | null, latitude?: string | null, zip?: string | null } | null, venue?: { __typename?: 'FlipVenue', name: string } | null, organization: { __typename?: 'FlipOrganization', id: string, handle: string, name: string, description?: string | null, logoURL?: string | null, contactEmail?: string | null }, media?: Array<{ __typename?: 'FlipMedia', id: string, type: MediaType, url: string }> | null, parentEvent?: { __typename?: 'FlipEvent', id: string } | null };
+export type ParentEventDetails_EventFragment = { __typename?: 'FlipEvent', id: string, handle: string, createdAt: any, updatedAt: any, name: string, description?: string | null, startAt: any, endAt: any, onsale?: any | null, offsale?: any | null, isOnSale: boolean, policy?: string | null, mediaCollection?: any | null, hasSeatMap: boolean, maxTicketPerOrder?: number | null, status: EventStatus, isMultipleDay: boolean, address?: { __typename?: 'FlipAddress', address?: string | null, city?: string | null, longitude?: string | null, latitude?: string | null, zip?: string | null } | null, venue?: { __typename?: 'FlipVenue', name: string } | null, organization: { __typename?: 'FlipOrganization', id: string, handle: string, name: string, description?: string | null, logoURL?: string | null, contactEmail?: string | null }, media?: Array<{ __typename?: 'FlipMedia', id: string, type: MediaType, url: string }> | null, parentEvent?: { __typename?: 'FlipEvent', id: string } | null };
 
 export type UpdateCartMetadataMutationVariables = Exact<{
   input: UpdateCartMetadataInput;
@@ -10371,27 +10267,6 @@ export type RequestOrganizationPayoutReportMutationVariables = Exact<{
 
 export type RequestOrganizationPayoutReportMutation = { __typename?: 'Mutation', requestOrganizationPayoutReport: { __typename?: 'RequestReportResponse', reportId: string } };
 
-export type AddCartInvoiceMutationVariables = Exact<{
-  input: AddCardInvoiceInput;
-}>;
-
-
-export type AddCartInvoiceMutation = { __typename?: 'Mutation', addCartInvoice: { __typename?: 'invoice', id: string, email: string, address: string, name: string, phone: string, tax_code?: string | null } };
-
-export type RemoveCartInvoiceMutationVariables = Exact<{
-  input: RemoveCartInvoiceInput;
-}>;
-
-
-export type RemoveCartInvoiceMutation = { __typename?: 'Mutation', removeCartInvoice: { __typename?: 'invoice', id: string } };
-
-export type RequestOrganizationInvoiceReportMutationVariables = Exact<{
-  input: RequestOrganizationInvoiceReportInput;
-}>;
-
-
-export type RequestOrganizationInvoiceReportMutation = { __typename?: 'Mutation', requestOrganizationInvoiceReport: { __typename?: 'RequestReportResponse', reportId: string } };
-
 export type GetReservationSessionQueryVariables = Exact<{
   input: GetReservationSessionInput;
 }>;
@@ -10418,14 +10293,14 @@ export type MyOrderQueryVariables = Exact<{
 }>;
 
 
-export type MyOrderQuery = { __typename?: 'Query', getMyOrders: { __typename?: 'GetMyOrdersResponse', orders: Array<{ __typename?: 'MyOrders', cartDisplayId?: string | null, orderDisplayId?: string | null, eventId: string, cartId?: string | null, total: number, ticketCount: number, type: DeliveryMethod, orderId?: string | null, createdAt: any, status?: string | null, event?: { __typename?: 'FlipEvent', id: string, handle: string, name: string, startAt: any, endAt: any, isOnSale: boolean, status: EventStatus, mediaCollection?: any | null, hasSeatMap: boolean, media?: Array<{ __typename?: 'FlipMedia', id: string, type: MediaType, url: string }> | null } | null, ticketTiers?: Array<{ __typename: 'PurchasedTicketTier', id?: string | null, name?: string | null, quantity: number }> | null, invoice?: { __typename?: 'invoice', id: string } | null }>, pageInfo: { __typename?: 'PageInfo', endCursor?: string | null, hasNextPage: boolean, startCursor?: string | null } } };
+export type MyOrderQuery = { __typename?: 'Query', getMyOrders: { __typename?: 'GetMyOrdersResponse', orders: Array<{ __typename?: 'MyOrders', cartDisplayId?: string | null, orderDisplayId?: string | null, eventId: string, cartId?: string | null, total: number, ticketCount: number, type: DeliveryMethod, orderId?: string | null, createdAt: any, event?: { __typename?: 'FlipEvent', id: string, handle: string, name: string, startAt: any, endAt: any, isOnSale: boolean, status: EventStatus, mediaCollection?: any | null, hasSeatMap: boolean, media?: Array<{ __typename?: 'FlipMedia', id: string, type: MediaType, url: string }> | null } | null, ticketTiers?: Array<{ __typename: 'PurchasedTicketTier', id?: string | null, name?: string | null, quantity: number }> | null }>, pageInfo: { __typename?: 'PageInfo', endCursor?: string | null, hasNextPage: boolean, startCursor?: string | null } } };
 
 export type GetOrderDetailsQueryVariables = Exact<{
   input: GetOrderDetailsInput;
 }>;
 
 
-export type GetOrderDetailsQuery = { __typename?: 'Query', getOrderDetails: { __typename?: 'GetOrderDetailsResponse', status?: string | null, cartDisplayId?: string | null, orderDisplayId?: string | null, eventId: string, cartId?: string | null, total: number, ticketCount: number, type: DeliveryMethod, orderId?: string | null, createdAt: any, discount?: number | null, email?: string | null, fee?: number | null, name?: string | null, subTotal?: number | null, tax?: number | null, taxRate?: number | null, ticketTiers?: Array<{ __typename: 'PurchasedTicketTier', id?: string | null, name?: string | null, quantity: number }> | null, payment?: { __typename?: 'PaymentData', provider?: string | null } | null, invoice?: { __typename?: 'invoice', name: string, address: string, phone: string, tax_code?: string | null, email: string } | null } };
+export type GetOrderDetailsQuery = { __typename?: 'Query', getOrderDetails: { __typename?: 'GetOrderDetailsResponse', status?: string | null, cartDisplayId?: string | null, orderDisplayId?: string | null, eventId: string, cartId?: string | null, total: number, ticketCount: number, type: DeliveryMethod, orderId?: string | null, createdAt: any, discount?: number | null, email?: string | null, fee?: number | null, name?: string | null, subTotal?: number | null, tax?: number | null, taxRate?: number | null, ticketTiers?: Array<{ __typename: 'PurchasedTicketTier', id?: string | null, name?: string | null, quantity: number }> | null, event?: { __typename?: 'FlipEvent', id: string, handle: string, name: string, startAt: any, endAt: any, isOnSale: boolean, status: EventStatus, mediaCollection?: any | null, hasSeatMap: boolean, media?: Array<{ __typename?: 'FlipMedia', id: string, type: MediaType, url: string }> | null } | null, payment?: { __typename?: 'PaymentData', provider?: string | null } | null } };
 
 export type GetEventViewsChartGroupByChannelQueryVariables = Exact<{
   input: GetEventViewsChartGroupByChannelInput;
@@ -10465,7 +10340,7 @@ export type GetMyEventsQueryVariables = Exact<{
 }>;
 
 
-export type GetMyEventsQuery = { __typename?: 'Query', getMyEvents: { __typename?: 'GetMyEventsResponse', events: Array<{ __typename?: 'FlipEvent', id: string, handle: string, createdAt: any, updatedAt: any, organizationId: string, name: string, description?: string | null, startAt: any, endAt: any, addressId?: string | null, venueId?: string | null, status: EventStatus, hasSeatMap: boolean, hasWaitingRoom: boolean, maxTicketPerOrder?: number | null, isMultipleDay: boolean, isParentEvent: boolean, media?: Array<{ __typename?: 'FlipMedia', id: string, type: MediaType, url: string }> | null, address?: { __typename?: 'FlipAddress', address?: string | null } | null, venue?: { __typename?: 'FlipVenue', name: string } | null }>, pagination: { __typename?: 'PaginationResponse', page: number, size?: number | null, total?: number | null } } };
+export type GetMyEventsQuery = { __typename?: 'Query', getMyEvents: { __typename?: 'GetMyEventsResponse', events: Array<{ __typename?: 'FlipEvent', id: string, handle: string, createdAt: any, updatedAt: any, organizationId: string, name: string, description?: string | null, startAt: any, endAt: any, addressId?: string | null, venueId?: string | null, status: EventStatus, hasSeatMap: boolean, maxTicketPerOrder?: number | null, isMultipleDay: boolean, isParentEvent: boolean, media?: Array<{ __typename?: 'FlipMedia', id: string, type: MediaType, url: string }> | null, address?: { __typename?: 'FlipAddress', address?: string | null } | null, venue?: { __typename?: 'FlipVenue', name: string } | null }>, pagination: { __typename?: 'PaginationResponse', page: number, size?: number | null, total?: number | null } } };
 
 export type GetSeatMapQueryVariables = Exact<{
   input: GeEventSeatMapInput;
@@ -10563,7 +10438,7 @@ export type OrganizationCheckoutConfigsQueryVariables = Exact<{
 }>;
 
 
-export type OrganizationCheckoutConfigsQuery = { __typename?: 'Query', organizationCheckoutConfigs: { __typename?: 'GetOrganizationCheckoutConfigsResponse', offlineSalesEnabled: boolean, isShowCheckoutOptions: boolean, invoiceEnabled: boolean } };
+export type OrganizationCheckoutConfigsQuery = { __typename?: 'Query', organizationCheckoutConfigs: { __typename?: 'GetOrganizationCheckoutConfigsResponse', offlineSalesEnabled: boolean, isShowCheckoutOptions: boolean } };
 
 export type DiscountsQueryVariables = Exact<{
   input: GetDiscountsInput;
@@ -10607,7 +10482,7 @@ export type GetOrdersQueryVariables = Exact<{
 }>;
 
 
-export type GetOrdersQuery = { __typename?: 'Query', getOrders: { __typename?: 'GetOrdersResponse', pageInfo: { __typename?: 'PageInfo', hasNextPage: boolean, endCursor?: string | null }, orders: Array<{ __typename?: 'GetOrdersResponseOrder', createdAt: any, orderDisplayId: string, orderId: string, paymentMethod: string, status: string, ticketType: string, isRefundable: boolean, total: number, discountTotal: number, subtotal: number, receiverEmail: string, receiverName?: string | null, items: Array<{ __typename?: 'GetOrdersResponseItem', id: string, name: string, quantity: number, metadata?: any | null }>, user: { __typename?: 'GetOrdersResponseUser', displayName: string, email: string }, event: { __typename?: 'FlipEvent', id: string, isGeneralAdmission: boolean }, invoice?: { __typename?: 'invoice', id: string } | null }> } };
+export type GetOrdersQuery = { __typename?: 'Query', getOrders: { __typename?: 'GetOrdersResponse', pageInfo: { __typename?: 'PageInfo', hasNextPage: boolean, endCursor?: string | null }, orders: Array<{ __typename?: 'GetOrdersResponseOrder', createdAt: any, orderDisplayId: string, orderId: string, paymentMethod: string, status: string, ticketType: string, isRefundable: boolean, total: number, discountTotal: number, subtotal: number, receiverEmail: string, receiverName?: string | null, items: Array<{ __typename?: 'GetOrdersResponseItem', id: string, name: string, quantity: number, metadata?: any | null }>, user: { __typename?: 'GetOrdersResponseUser', displayName: string, email: string }, event: { __typename?: 'FlipEvent', id: string, isGeneralAdmission: boolean } }> } };
 
 export type EventOccurrencesQueryVariables = Exact<{
   input: GetEventOccurrencesInput;
@@ -10621,7 +10496,7 @@ export type EventByIdQueryVariables = Exact<{
 }>;
 
 
-export type EventByIdQuery = { __typename?: 'Query', eventById: { __typename?: 'FlipEvent', id: string, handle: string, name: string, startAt: any, endAt: any, onsale?: any | null, offsale?: any | null, hasSeatMap: boolean, hasWaitingRoom: boolean, maxTicketPerOrder?: number | null, isMultipleDay: boolean, isParentEvent: boolean, organizationId: string, media?: Array<{ __typename?: 'FlipMedia', id: string, url: string }> | null, seatMap?: { __typename?: 'FlipSeatMap', id: string, url: string, tierRules: any, holdSeatRules: any } | null } };
+export type EventByIdQuery = { __typename?: 'Query', eventById: { __typename?: 'FlipEvent', id: string, handle: string, name: string, startAt: any, endAt: any, onsale?: any | null, offsale?: any | null, hasSeatMap: boolean, maxTicketPerOrder?: number | null, isMultipleDay: boolean, isParentEvent: boolean, organizationId: string, media?: Array<{ __typename?: 'FlipMedia', id: string, url: string }> | null, seatMap?: { __typename?: 'FlipSeatMap', id: string, url: string, tierRules: any, holdSeatRules: any } | null } };
 
 export type GetTicketTiersQueryVariables = Exact<{
   data: GetTicketTierInput;
@@ -10648,13 +10523,6 @@ export type OrganizationReportStatusQueryVariables = Exact<{
 
 
 export type OrganizationReportStatusQuery = { __typename?: 'Query', organizationReportStatus: { __typename?: 'ReportStatusResponse', status: ReportStatus, reportId: string, downloadUrl?: string | null } };
-
-export type GetCartInvoiceQueryVariables = Exact<{
-  input: GetCartInvoiceInput;
-}>;
-
-
-export type GetCartInvoiceQuery = { __typename?: 'Query', cartInvoice?: { __typename?: 'invoice', id: string, name: string, email: string, phone: string, address: string, tax_code?: string | null } | null };
 
 export type SendSignUpVerificationEmailMutationVariables = Exact<{
   data: SendSignUpVerificationEmailInput;
@@ -10794,7 +10662,6 @@ export const EventDetails_EventFragmentDoc = gql`
   }
   mediaCollection
   hasSeatMap
-  hasWaitingRoom
   maxTicketPerOrder
   status
   isMultipleDay
@@ -10842,7 +10709,6 @@ export const ParentEventDetails_EventFragmentDoc = gql`
   }
   mediaCollection
   hasSeatMap
-  hasWaitingRoom
   maxTicketPerOrder
   status
   isMultipleDay
@@ -11745,110 +11611,6 @@ export function useRequestOrganizationPayoutReportMutation(baseOptions?: Apollo.
 export type RequestOrganizationPayoutReportMutationHookResult = ReturnType<typeof useRequestOrganizationPayoutReportMutation>;
 export type RequestOrganizationPayoutReportMutationResult = Apollo.MutationResult<RequestOrganizationPayoutReportMutation>;
 export type RequestOrganizationPayoutReportMutationOptions = Apollo.BaseMutationOptions<RequestOrganizationPayoutReportMutation, RequestOrganizationPayoutReportMutationVariables>;
-export const AddCartInvoiceDocument = gql`
-    mutation AddCartInvoice($input: AddCardInvoiceInput!) {
-  addCartInvoice(input: $input) {
-    id
-    email
-    address
-    name
-    phone
-    tax_code
-  }
-}
-    `;
-export type AddCartInvoiceMutationFn = Apollo.MutationFunction<AddCartInvoiceMutation, AddCartInvoiceMutationVariables>;
-
-/**
- * __useAddCartInvoiceMutation__
- *
- * To run a mutation, you first call `useAddCartInvoiceMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useAddCartInvoiceMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - An object with fields that represent the current status of the mutation's execution
- *
- * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
- *
- * @example
- * const [addCartInvoiceMutation, { data, loading, error }] = useAddCartInvoiceMutation({
- *   variables: {
- *      input: // value for 'input'
- *   },
- * });
- */
-export function useAddCartInvoiceMutation(baseOptions?: Apollo.MutationHookOptions<AddCartInvoiceMutation, AddCartInvoiceMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<AddCartInvoiceMutation, AddCartInvoiceMutationVariables>(AddCartInvoiceDocument, options);
-      }
-export type AddCartInvoiceMutationHookResult = ReturnType<typeof useAddCartInvoiceMutation>;
-export type AddCartInvoiceMutationResult = Apollo.MutationResult<AddCartInvoiceMutation>;
-export type AddCartInvoiceMutationOptions = Apollo.BaseMutationOptions<AddCartInvoiceMutation, AddCartInvoiceMutationVariables>;
-export const RemoveCartInvoiceDocument = gql`
-    mutation RemoveCartInvoice($input: RemoveCartInvoiceInput!) {
-  removeCartInvoice(input: $input) {
-    id
-  }
-}
-    `;
-export type RemoveCartInvoiceMutationFn = Apollo.MutationFunction<RemoveCartInvoiceMutation, RemoveCartInvoiceMutationVariables>;
-
-/**
- * __useRemoveCartInvoiceMutation__
- *
- * To run a mutation, you first call `useRemoveCartInvoiceMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useRemoveCartInvoiceMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - An object with fields that represent the current status of the mutation's execution
- *
- * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
- *
- * @example
- * const [removeCartInvoiceMutation, { data, loading, error }] = useRemoveCartInvoiceMutation({
- *   variables: {
- *      input: // value for 'input'
- *   },
- * });
- */
-export function useRemoveCartInvoiceMutation(baseOptions?: Apollo.MutationHookOptions<RemoveCartInvoiceMutation, RemoveCartInvoiceMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<RemoveCartInvoiceMutation, RemoveCartInvoiceMutationVariables>(RemoveCartInvoiceDocument, options);
-      }
-export type RemoveCartInvoiceMutationHookResult = ReturnType<typeof useRemoveCartInvoiceMutation>;
-export type RemoveCartInvoiceMutationResult = Apollo.MutationResult<RemoveCartInvoiceMutation>;
-export type RemoveCartInvoiceMutationOptions = Apollo.BaseMutationOptions<RemoveCartInvoiceMutation, RemoveCartInvoiceMutationVariables>;
-export const RequestOrganizationInvoiceReportDocument = gql`
-    mutation RequestOrganizationInvoiceReport($input: RequestOrganizationInvoiceReportInput!) {
-  requestOrganizationInvoiceReport(input: $input) {
-    reportId
-  }
-}
-    `;
-export type RequestOrganizationInvoiceReportMutationFn = Apollo.MutationFunction<RequestOrganizationInvoiceReportMutation, RequestOrganizationInvoiceReportMutationVariables>;
-
-/**
- * __useRequestOrganizationInvoiceReportMutation__
- *
- * To run a mutation, you first call `useRequestOrganizationInvoiceReportMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useRequestOrganizationInvoiceReportMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - An object with fields that represent the current status of the mutation's execution
- *
- * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
- *
- * @example
- * const [requestOrganizationInvoiceReportMutation, { data, loading, error }] = useRequestOrganizationInvoiceReportMutation({
- *   variables: {
- *      input: // value for 'input'
- *   },
- * });
- */
-export function useRequestOrganizationInvoiceReportMutation(baseOptions?: Apollo.MutationHookOptions<RequestOrganizationInvoiceReportMutation, RequestOrganizationInvoiceReportMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<RequestOrganizationInvoiceReportMutation, RequestOrganizationInvoiceReportMutationVariables>(RequestOrganizationInvoiceReportDocument, options);
-      }
-export type RequestOrganizationInvoiceReportMutationHookResult = ReturnType<typeof useRequestOrganizationInvoiceReportMutation>;
-export type RequestOrganizationInvoiceReportMutationResult = Apollo.MutationResult<RequestOrganizationInvoiceReportMutation>;
-export type RequestOrganizationInvoiceReportMutationOptions = Apollo.BaseMutationOptions<RequestOrganizationInvoiceReportMutation, RequestOrganizationInvoiceReportMutationVariables>;
 export const GetReservationSessionDocument = gql`
     query GetReservationSession($input: GetReservationSessionInput!) {
   getReservationSession(input: $input) {
@@ -12008,15 +11770,11 @@ export const MyOrderDocument = gql`
       type
       orderId
       createdAt
-      status
       ticketTiers {
         id
         name
         quantity
         __typename
-      }
-      invoice {
-        id
       }
     }
     pageInfo {
@@ -12079,6 +11837,9 @@ export const GetOrderDetailsDocument = gql`
       quantity
       __typename
     }
+    event {
+      ...OrderCard_event
+    }
     discount
     email
     fee
@@ -12089,16 +11850,9 @@ export const GetOrderDetailsDocument = gql`
     payment {
       provider
     }
-    invoice {
-      name
-      address
-      phone
-      tax_code
-      email
-    }
   }
 }
-    `;
+    ${OrderCard_EventFragmentDoc}`;
 
 /**
  * __useGetOrderDetailsQuery__
@@ -12375,7 +12129,6 @@ export const GetMyEventsDocument = gql`
       venueId
       status
       hasSeatMap
-      hasWaitingRoom
       maxTicketPerOrder
       isMultipleDay
       isParentEvent
@@ -13100,7 +12853,6 @@ export const OrganizationCheckoutConfigsDocument = gql`
   organizationCheckoutConfigs(input: $input) {
     offlineSalesEnabled
     isShowCheckoutOptions
-    invoiceEnabled
   }
 }
     `;
@@ -13400,9 +13152,6 @@ export const GetOrdersDocument = gql`
       subtotal
       receiverEmail
       receiverName
-      invoice {
-        id
-      }
     }
   }
 }
@@ -13519,7 +13268,6 @@ export const EventByIdDocument = gql`
     onsale
     offsale
     hasSeatMap
-    hasWaitingRoom
     maxTicketPerOrder
     isMultipleDay
     isParentEvent
@@ -13781,51 +13529,6 @@ export type OrganizationReportStatusQueryHookResult = ReturnType<typeof useOrgan
 export type OrganizationReportStatusLazyQueryHookResult = ReturnType<typeof useOrganizationReportStatusLazyQuery>;
 export type OrganizationReportStatusSuspenseQueryHookResult = ReturnType<typeof useOrganizationReportStatusSuspenseQuery>;
 export type OrganizationReportStatusQueryResult = Apollo.QueryResult<OrganizationReportStatusQuery, OrganizationReportStatusQueryVariables>;
-export const GetCartInvoiceDocument = gql`
-    query GetCartInvoice($input: GetCartInvoiceInput!) {
-  cartInvoice(input: $input) {
-    id
-    name
-    email
-    phone
-    address
-    tax_code
-  }
-}
-    `;
-
-/**
- * __useGetCartInvoiceQuery__
- *
- * To run a query within a React component, call `useGetCartInvoiceQuery` and pass it any options that fit your needs.
- * When your component renders, `useGetCartInvoiceQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useGetCartInvoiceQuery({
- *   variables: {
- *      input: // value for 'input'
- *   },
- * });
- */
-export function useGetCartInvoiceQuery(baseOptions: Apollo.QueryHookOptions<GetCartInvoiceQuery, GetCartInvoiceQueryVariables> & ({ variables: GetCartInvoiceQueryVariables; skip?: boolean; } | { skip: boolean; }) ) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<GetCartInvoiceQuery, GetCartInvoiceQueryVariables>(GetCartInvoiceDocument, options);
-      }
-export function useGetCartInvoiceLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetCartInvoiceQuery, GetCartInvoiceQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<GetCartInvoiceQuery, GetCartInvoiceQueryVariables>(GetCartInvoiceDocument, options);
-        }
-export function useGetCartInvoiceSuspenseQuery(baseOptions?: Apollo.SuspenseQueryHookOptions<GetCartInvoiceQuery, GetCartInvoiceQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useSuspenseQuery<GetCartInvoiceQuery, GetCartInvoiceQueryVariables>(GetCartInvoiceDocument, options);
-        }
-export type GetCartInvoiceQueryHookResult = ReturnType<typeof useGetCartInvoiceQuery>;
-export type GetCartInvoiceLazyQueryHookResult = ReturnType<typeof useGetCartInvoiceLazyQuery>;
-export type GetCartInvoiceSuspenseQueryHookResult = ReturnType<typeof useGetCartInvoiceSuspenseQuery>;
-export type GetCartInvoiceQueryResult = Apollo.QueryResult<GetCartInvoiceQuery, GetCartInvoiceQueryVariables>;
 export const SendSignUpVerificationEmailDocument = gql`
     mutation SendSignUpVerificationEmail($data: SendSignUpVerificationEmailInput!) {
   sendSignUpVerificationEmail(data: $data)

@@ -172,20 +172,8 @@
       "sessionInvalid": "Session expired",
       "sessionInvalidDes": "Reservation time expired or you are purchasing tickets in another window.",
       "bookOtherTickets": "Book New Tickets",
-      "ticketReserving": "Ticket reservation time remaining",
-      "selectSeatNoteMobile": "Tap on the seat map to select your seats",
-      "longOperationDialog": {
-        "initial": {
-          "title": "Please wait",
-          "message": "System is processing reservation...",
-          "subtitle": "Keep this page open to ensure data is not lost."
-        },
-        "error": {
-          "title": "An error has occurred",
-          "message": "Reservation is taking longer than expected. Please try again.",
-          "retry": "Retry"
-        }
-      }
+      "ticketReserving": "Your tickets are reserved for",
+      "selectSeatNoteMobile": "Tap on the seat map to select your seats"
     },
     "ticketType": {
       "eTicket": "E-Ticket",
@@ -224,31 +212,6 @@
         "cancel": "Cancel",
         "disable": "Disabled"
       }
-    },
-    "invoice": {
-      "heading": "Issue Invoice",
-      "subHeading": "Request the organizer to issue an invoice for the order",
-      "taxCode": "Tax Code",
-      "email": "Email",
-      "phone": "Phone",
-      "name": "Company Name",
-      "address": "Company Address",
-      "nameRequired": "Invalid name",
-      "emailRequired": "Invalid email",
-      "phoneRequired": "Invalid phone number",
-      "addressRequired": "Invalid address",
-      "namePlaceholder": "Enter name",
-      "emailPlaceholder": "Enter email",
-      "phonePlaceholder": "Enter phone number",
-      "addressPlaceholder": "Enter address",
-      "taxCodePlaceholder": "Enter tax code",
-      "updateSuccess": "Invoice updated successfully",
-      "updateFailed": "An error occurred, please try again",
-      "removeSuccess": "Invoice removed successfully",
-      "edit": "Edit invoice",
-      "warning": "Invoice will be sent to {organizationName} for processing.",
-      "remove": "Remove",
-      "removedForOfflineSale": "Invoice is removed because it is not available for offline sale"
     }
   },
   "reservation": {
@@ -432,15 +395,7 @@
     "tax": "Tax",
     "soldOut": "Sold Out",
     "orderNumber": "Order ID",
-    "cartNumber": "Cart ID",
-    "invoice": {
-      "title": "Invoice",
-      "name": "Name",
-      "phone": "Phone",
-      "email": "Email",
-      "address": "Address",
-      "taxCode": "Tax Code"
-    }
+    "cartNumber": "Cart ID"
   },
   "myOrder": {
     "title": "Orders",
@@ -458,8 +413,7 @@
     "cartNumber": "Cart ID",
     "order": "Order",
     "pay": "Pay",
-    "pendingPayment": "Pending Payment",
-    "invoice": "With invoice"
+    "pendingPayment": "Pending Payment"
   },
   "me": {
     "tickets": {
@@ -584,9 +538,7 @@
       "support": "Support",
       "supportDescription": "Contact Flip for support",
       "organizationPayout": "Organization Payout",
-      "organizationPayoutDescription": "Track your events' sales",
-      "organizationInvoice": "Organization Invoice",
-      "organizationInvoiceDescription": "View your events's invoice requests"
+      "organizationPayoutDescription": "Track your events' sales"
     },
     "marketing": {
       "title": "Analytics",
@@ -683,6 +635,8 @@
     "allRightsReserved": "All rights reserved.",
     "terms": "Terms",
     "privacyChoices": "Your privacy choices",
+    "beta_note_1": "Flip is in beta and registering with the Ministry of Industry and Trade",
+    "beta_note_2": "Send your feedback here",
     "sitemap": "Site map",
     "companyName": "Goloco Company Limited",
     "businessLicense": "Business Registration Certificate No",
@@ -833,10 +787,7 @@
       "success": "Export report successfully",
       "organizationPayoutTitle": "Organization revenue",
       "organizationPayoutDescription": "Report will include revenue from all events in the selected time range.",
-      "organizationPayoutSelectTimeRange": "Select time range",
-      "organizationInvoiceTitle": "Export invoice",
-      "organizationInvoiceDescription": "Report will include invoices from all events in the selected time range.",
-      "organizationInvoiceSelectTimeRange": "Select time range"
+      "organizationPayoutSelectTimeRange": "Select time range"
     }
   },
   "organization": {
@@ -935,15 +886,11 @@
   },
   "eventSettings": {
     "title": "Settings",
-    "updateSuccess": "Update successful",
-    "updateFailed": "Update failed",
     "offlineSale": {
       "title": "Offline Sale",
-      "description": "Take advantage of Flip's management and check-in features even without selling tickets directly."
-    },
-    "invoiceRequest": {
-      "title": "Invoice Request",
-      "description": "Allow customers to request invoices when purchasing tickets."
+      "description": "Take advantage of Flip's management and check-in features even without selling tickets directly.",
+      "updateSuccess": "Update successful",
+      "updateFailed": "Update failed"
     }
   },
   "time": {
@@ -957,16 +904,16 @@
     "receiverNameLabel": "Recipient",
     "receiverEmailLabel": "Recipient Email",
     "paymentMethodLabel": "Payment",
-    "amountLabel": "Amount",
+    "paidAmountLabel": "Amount Paid",
+    "discountAmountLabel": "Discount",
     "statusLabel": "Status",
-    "invoiceLabel": "Invoice",
     "totalOrdersCount": "Total Orders",
     "pendingOrdersCount": "Processing",
     "canceledOrdersCount": "Canceled",
     "createdAtLabel": "Time",
     "paymentMethod": {
-      "card": "Credit/Debit",
-      "virtual-account": "Transfer",
+      "card": "Credit/Debit Card",
+      "virtual-account": "Bank Transfer",
       "momo": "MoMo"
     },
     "status": {
@@ -981,23 +928,5 @@
   "maintenance": {
     "title": "We'll be back soon!",
     "description": "We're currently performing some maintenance on our site. We'll be back online shortly. Thank you for your patience!"
-  },
-  "waitingRoom": {
-    "queuePositionExpires": "Queue position has expired",
-    "queuePositionExpiresDes": "Sorry, your queue position has expired. Please try again in a few minutes.",
-    "goBack": "Go Back",
-    "inQueue": "You are in queue",
-    "queueDescription": "When it's your turn, you'll have 10 minutes to complete your booking and payment.",
-    "estimatedAccessTime": "Estimated access time",
-    "estimatedWaitingTime": "Your estimated waiting time is",
-    "queuePosition": "Users ahead of you",
-    "lastUpdated": "Last updated",
-    "minutes": "minutes",
-    "yourTurn": "It's your turn!",
-    "yourTurnDescription": "You have 10 minutes to complete your booking and payment.",
-    "backButton": "Go Back",
-    "bookButton": "Book Now",
-    "accessTokenExpiresIn": "Reservation time remaining",
-    "updateNotice": "Data is being updated constantly"
   }
 }

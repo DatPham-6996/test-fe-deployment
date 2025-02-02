@@ -1,7 +1,4 @@
-import { ConfirmationDialog } from '@/components/responsive-dialog/confirmation-dialog';
-import { useResponsiveDialog } from '@/components/responsive-dialog/responsive-dialog-context';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/shadcn/ui/avatar';
-import { Button } from '@/components/shadcn/ui/button';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -14,8 +11,10 @@ import { User as FirebaseUser } from 'firebase/auth';
 import { LogOutIcon, UserIcon } from 'lucide-react';
 import { useRouter } from 'next-nprogress-bar';
 import Link from 'next/link';
-import { isDesktop, isMobile } from 'react-device-detect';
 import { useIntl } from 'react-intl';
+import { ConfirmationDialog } from '../responsive-dialog/confirmation-dialog';
+import { useResponsiveDialog } from '../responsive-dialog/responsive-dialog-context';
+import { Button } from '../shadcn/ui/button';
 
 export type HeaderProps = {
   isLoggedIn?: boolean;
@@ -45,7 +44,7 @@ export function ProfileDropdown({
 
   const renderUserAvatar = () => (
     <div className="bg-slate-300 bg-opacity-40 rounded-full p-1.5 hover:visible invisible ">
-      <Avatar className="w-[36px] h-[36px] hover:shadow-xl visible border border-muted">
+      <Avatar className="w-[28px] h-[28px] hover:shadow-xl visible border border-muted">
         <AvatarImage src={currentUser?.photoURL ?? ''} alt="user-avatar" />
         <AvatarFallback className="bg-flip">
           {firstCharName && firstCharName.length > 0 ? firstCharName.toUpperCase() : <UserIcon size={19} />}
@@ -61,14 +60,13 @@ export function ProfileDropdown({
           className="flex hover:cursor-pointer items-center gap-2 group text-sm dark:text-neutral-100 text-neutral-600"
           onClick={openLoginModal}
         >
-          {isMobile && renderUserAvatar()}
-          {isDesktop && <Button variant={'outline'}>{formatMessage({ id: 'header.login' })}</Button>}
+          <Button variant={'outline'}>{formatMessage({ id: 'header.login' })}</Button>
         </div>
       )}
       {isLoggedIn && (
         <DropdownMenu>
           <DropdownMenuTrigger>
-            <a>{renderUserAvatar()}</a>
+            <Link href={''}>{renderUserAvatar()}</Link>
           </DropdownMenuTrigger>
           <DropdownMenuContent className="w-44" align="end">
             <Link href="/me/personal-info">

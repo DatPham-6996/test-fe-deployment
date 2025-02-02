@@ -8,6 +8,7 @@ import { ContentCenterNarrow } from '@/containers/content-center/ContentCenterNa
 import { FlipLayout } from '@/containers/flip-layout';
 import { FlipEvent, Maybe, useEventStatusQuery } from '@/lib/__generated__/graphql';
 import { useLogEvent } from '@/lib/hooks/useLogEvent';
+import { MediaCollection } from '@/lib/types';
 import { toastError } from '@/lib/utils/toast';
 import {
   RESERVATION_SESSION_ERROR_MESSAGE,
@@ -15,7 +16,6 @@ import {
 } from '@/state-management/hooks/useCompleteCartWithRetry';
 import { selectedEntitiesState } from '@/state-management/seatmap/atoms/selected-entities-state';
 import { selectedSeatsState } from '@/state-management/seatmap/atoms/selected-seats-state';
-import { LineItem } from '@medusajs/medusa';
 import classNames from 'classnames';
 import { useRouter } from 'next-nprogress-bar';
 import { useParams } from 'next/navigation';
@@ -65,7 +65,7 @@ export default function Status() {
 
   useEffect(() => {
     completeCart(void 0, {
-      onSuccess: () => {
+      onSuccess: ({ data }) => {
         setCartStatus('completed');
       },
       onError: (error: TODO) => {
@@ -82,15 +82,16 @@ export default function Status() {
   }, [cartId, completeCart, intl]);
 
   useEffect(() => {
-    if (eventDetail && cartStatus === 'completed') {
+    if (eventDetail && cartStatus === 'completed' && completeCartRes?.data) {
+      const data = completeCartRes.data;
       logEvent({
         eventName: 'order_completed',
-        value: cartId,
+        value: data.id,
         event: eventDetail?.event as Maybe<FlipEvent>,
-        metadata: { cartId, eventId: eventDetail.event.id },
+        metadata: { cartId, orderId: data.id, eventId: eventDetail.event.id },
       });
     }
-  }, [cartStatus, eventDetail, logEvent, cartId]);
+  }, [cartStatus, eventDetail, logEvent, cartId, completeCartRes]);
 
   const isLoading = isCompleteCartExecuting || isEventLoading || !cartStatus;
 
@@ -100,6 +101,16 @@ export default function Status() {
         <ClipLoader />
       </div>
     );
+  };
+
+  const getCoverPhoto = () => {
+    if (event) {
+      const mediaCollection = event?.mediaCollection as MediaCollection;
+      if (mediaCollection?.cover && event?.media && event?.media.length) {
+        return event?.media.find((item: { id: string }) => mediaCollection.cover === item.id);
+      }
+    }
+    return null;
   };
 
   const renderCartCompletionIcon = () => {
@@ -185,7 +196,13 @@ export default function Status() {
 
   const renderNotification = () => {
     const completeCartData = completeCartRes?.data;
-    let quantity = completeCartData?.items.reduce((acc, item) => acc + (item?.quantity || 0), 0);
+    let quantity = 0;
+    if (completeCartData && completeCartData.items) {
+      completeCartData.items.map((item) => {
+        quantity += item?.quantity || 0;
+      });
+    }
+    const coverPhoto = getCoverPhoto();
 
     return (
       <div className="flex flex-col items-center justify-center gap-4 ">

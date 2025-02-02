@@ -1,6 +1,5 @@
 'use client';
 
-import { LongOperationButton } from '@/components/button/long-operation-button';
 import { Card, CardBody, CardHeader } from '@/components/card';
 import { QuantitySelector } from '@/components/quantity-selector';
 import { Button } from '@/components/shadcn/ui/button';
@@ -35,6 +34,7 @@ export function GeneralAdmissionTicketCardContainer({
 }: GeneralAdmissionProps) {
   const { formatMessage } = useIntl();
   const [quantity, setQuantity] = useState(1);
+  const [submitting, setSubmitting] = useState(false);
   const { data } = useGetTicketTiersSuspenseQuery({ variables: { data: { eventId: eventId } } });
   const { toCheckout } = useGeneralAdmissionCheckout();
   const { logEvent } = useLogEvent();
@@ -42,20 +42,20 @@ export function GeneralAdmissionTicketCardContainer({
   const onCheckOutClick = async (selectedPriceItem: TicketPriceItemWithCount | null) => {
     const selectedItems = selectedPriceItem
       ? [
-          {
-            value: selectedPriceItem.value,
-            quantity: selectedPriceItem.count,
-          },
-        ]
+        {
+          value: selectedPriceItem.value,
+          quantity: selectedPriceItem.count,
+        },
+      ]
       : null;
 
     logEvent({
       eventName: 'select_ticket_tier',
       metadata: { selectedItems: JSON.stringify(selectedItems) },
-      eventID: eventId,
+      eventID: eventId
     });
 
-    await toCheckout(selectedItems);
+    toCheckout(selectedItems, setSubmitting);
   };
 
   const ticketTiers = data?.getTicketTiers ?? [];
@@ -82,26 +82,15 @@ export function GeneralAdmissionTicketCardContainer({
     }
   }, [ticketOptions, selectedTier]);
 
-  const onSubmit = async () => {
+  const onSubmit = () => {
     const newSelectedTier = (selectedTier || {}) as TicketPriceItem;
-    await onCheckOutClick({ ...newSelectedTier, count: quantity });
+
+    setSubmitting(true);
+    onCheckOutClick({ ...newSelectedTier, count: quantity });
   };
 
   const isEmpty = ticketOptions && ticketOptions.length === 0;
   const subTotal = Number(selectedTier?.price) * quantity;
-
-  const dialogContent = {
-    initial: {
-      title: formatMessage({ id: 'seatReservation.confirmLoading.initial.title' }),
-      message: formatMessage({ id: 'seatReservation.confirmLoading.initial.message' }),
-      subtitle: formatMessage({ id: 'seatReservation.confirmLoading.initial.subtitle' }),
-    },
-    error: {
-      title: formatMessage({ id: 'seatReservation.confirmLoading.error.title' }),
-      message: formatMessage({ id: 'seatReservation.confirmLoading.error.message' }),
-      retry: formatMessage({ id: 'seatReservation.confirmLoading.error.retry' }),
-    },
-  };
 
   const renderTicketTiers = (
     <>
@@ -148,19 +137,19 @@ export function GeneralAdmissionTicketCardContainer({
           </div>
         ) : null}
         <div className="mt-4">
-          <LongOperationButton
-            operation={onSubmit}
+          <Button
+            loading={submitting}
+            onClick={onSubmit}
             className="w-full"
             size={'lg'}
             disabled={!isOnSale || !selectedTier}
-            dialogContent={dialogContent}
           >
             {isOnSale
               ? formatMessage({ id: 'eventDetail.bookTicket' })
               : isUpcoming
                 ? formatMessage({ id: 'eventDetail.upcoming' })
                 : formatMessage({ id: 'eventDetail.offsale' })}
-          </LongOperationButton>
+          </Button>
         </div>
       </div>
     </>

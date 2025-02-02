@@ -12,9 +12,11 @@ import { useGateValue } from '@statsig/react-bindings';
 import {
   CalendarFold,
   CalendarIcon,
+  ChevronRightIcon,
   FileDownIcon,
+  HelpCircleIcon,
   LifeBuoyIcon,
-  ReceiptTextIcon,
+  PencilIcon,
 } from 'lucide-react';
 import { DateTime } from 'luxon';
 import { useEffect } from 'react';
@@ -28,9 +30,9 @@ import EventOccurrencesSelector, {
   SelectedEvent,
   SelectedParentEvent,
 } from '@/components/event/EventOccurrencesSelector';
+import { Command } from '@/components/shadcn/ui/command';
 import { useRouter } from 'next/navigation';
 import OrganizationPayoutReportExportContainer from './containers/OrganizationPayoutReportExportContainer';
-import OrganizationInvoiceReportExportContainer from './containers/OrganizationInvoiceReportExportContainer';
 
 export default function OrganizerHomePage() {
   const { currentUser } = useAuth();
@@ -257,14 +259,6 @@ export default function OrganizerHomePage() {
             description={formatMessage({ id: 'organizer.homepage.organizationPayoutDescription' })}
             onClick={() => {
               openDialog(<OrganizationPayoutReportExportContainer />);
-            }}
-          />
-          <OrganizationAction
-            icon={<ReceiptTextIcon className="w-6 h-6 text-muted-foreground" />}
-            title={formatMessage({ id: 'organizer.homepage.organizationInvoice' })}
-            description={formatMessage({ id: 'organizer.homepage.organizationInvoiceDescription' })}
-            onClick={() => {
-              openDialog(<OrganizationInvoiceReportExportContainer />);
             }}
           />
           <OrganizationAction

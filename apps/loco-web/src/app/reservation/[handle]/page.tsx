@@ -61,7 +61,6 @@ import { selectedEntitiesState } from '@/state-management/seatmap/atoms/selected
 import { showSeatLabelState } from '@/state-management/seatmap/atoms/show-seat-label-state';
 import { Separator } from '@radix-ui/react-separator';
 import './styles.css';
-import { QueueTokenTimer } from '@/components/timers/QueueTokenTimer';
 
 export default function ReservationPage() {
   const { formatMessage } = useIntl();
@@ -299,7 +298,6 @@ export default function ReservationPage() {
           <>
             <Drawer open={openSheet} onOpenChange={setOpenSheet}>
               <div className={cn('fixed w-full transition-all duration-300', 'bottom-0 left-0 z-[50]')}>
-                <QueueTokenTimer eventId={event.id} handle={event.handle} hasWaitingRoom={event.hasWaitingRoom} />
                 <DrawerTrigger asChild>
                   <button
                     className={cn(
@@ -369,70 +367,70 @@ export default function ReservationPage() {
                     <CarouselContent className={cn('-ml-2 relative', 'transition-all duration-300 ease-out')}>
                       {selectedEntities.length > 0
                         ? selectedEntitiesObjects.map((selectedEntity) => (
-                            <CarouselItem
-                              key={selectedEntity.type === 'seat' ? selectedEntity.seat.id : selectedEntity.section.id}
-                              className={cn(
-                                'pl-2 basis-auto',
-                                'animate-in fade-in-0 slide-in-from-left-5 duration-300'
-                              )}
-                            >
-                              <Badge
-                                className="flex items-center gap-2 px-3 py-1.5 border font-normal hover:no-underline 
+                          <CarouselItem
+                            key={selectedEntity.type === 'seat' ? selectedEntity.seat.id : selectedEntity.section.id}
+                            className={cn(
+                              'pl-2 basis-auto',
+                              'animate-in fade-in-0 slide-in-from-left-5 duration-300'
+                            )}
+                          >
+                            <Badge
+                              className="flex items-center gap-2 px-3 py-1.5 border font-normal hover:no-underline 
                                   bg-gray-50 hover:bg-gray-100
                                   dark:bg-gray-800 dark:hover:bg-gray-700 
                                   dark:border-gray-600"
-                                variant="outline"
+                              variant="outline"
+                            >
+                              <div
+                                className="w-2 h-2 rounded-full flex-shrink-0"
+                                style={{
+                                  backgroundColor: selectedEntity.tierBackgroundColor,
+                                  border: `1px solid ${selectedEntity.tierBorderColor}`,
+                                }}
+                              />
+                              <span
+                                className="whitespace-nowrap font-medium dark:text-gray-100"
+                                style={{ color: selectedEntity.tierBorderColor }}
                               >
-                                <div
-                                  className="w-2 h-2 rounded-full flex-shrink-0"
-                                  style={{
-                                    backgroundColor: selectedEntity.tierBackgroundColor,
-                                    border: `1px solid ${selectedEntity.tierBorderColor}`,
-                                  }}
-                                />
-                                <span
-                                  className="whitespace-nowrap font-medium dark:text-gray-100"
-                                  style={{ color: selectedEntity.tierBorderColor }}
-                                >
-                                  {formatEntityName(selectedEntity, entityIdToSectionName)}
-                                </span>
-                              </Badge>
-                            </CarouselItem>
-                          ))
+                                {formatEntityName(selectedEntity, entityIdToSectionName)}
+                              </span>
+                            </Badge>
+                          </CarouselItem>
+                        ))
                         : ticketTiers?.getTicketTiers.map((tier) => (
-                            <CarouselItem
-                              key={tier.id}
-                              className={cn(
-                                'pl-2 basis-auto',
-                                'animate-in fade-in-0 slide-in-from-left-5 duration-300'
-                              )}
-                            >
-                              <Badge
-                                className="flex items-center gap-2 px-3 py-1.5 border font-normal hover:no-underline 
+                          <CarouselItem
+                            key={tier.id}
+                            className={cn(
+                              'pl-2 basis-auto',
+                              'animate-in fade-in-0 slide-in-from-left-5 duration-300'
+                            )}
+                          >
+                            <Badge
+                              className="flex items-center gap-2 px-3 py-1.5 border font-normal hover:no-underline 
                                   bg-gray-50 hover:bg-gray-100
                                   dark:bg-gray-800 dark:hover:bg-gray-700 
                                   dark:border-gray-600"
-                                variant="outline"
+                              variant="outline"
+                            >
+                              <div
+                                className="w-2 h-2 rounded-full flex-shrink-0"
+                                style={{
+                                  backgroundColor: tier.metadata.background,
+                                  border: `1px solid ${tier.metadata.border}`,
+                                }}
+                              />
+                              <span
+                                className="whitespace-nowrap font-medium dark:text-gray-100"
+                                style={{ color: tier.metadata.border }}
                               >
-                                <div
-                                  className="w-2 h-2 rounded-full flex-shrink-0"
-                                  style={{
-                                    backgroundColor: tier.metadata.background,
-                                    border: `1px solid ${tier.metadata.border}`,
-                                  }}
-                                />
-                                <span
-                                  className="whitespace-nowrap font-medium dark:text-gray-100"
-                                  style={{ color: tier.metadata.border }}
-                                >
-                                  {tier.name}
-                                </span>
-                                <span className="whitespace-nowrap text-foreground dark:text-gray-100">
-                                  {formatPrice(String(tier.price))}
-                                </span>
-                              </Badge>
-                            </CarouselItem>
-                          ))}
+                                {tier.name}
+                              </span>
+                              <span className="whitespace-nowrap text-foreground dark:text-gray-100">
+                                {formatPrice(String(tier.price))}
+                              </span>
+                            </Badge>
+                          </CarouselItem>
+                        ))}
                     </CarouselContent>
                   </Carousel>
                 </div>
@@ -480,7 +478,6 @@ export default function ReservationPage() {
           <div className="flex flex-col w-full sm:w-96 mx-auto sm:border-r dark:border-t dark:sm:border-t-0 sm:h-full sm:max-h-none h-[50dvh] bg-muted dark:bg-transparent fixed bottom-0 sm:left-0 sm:top-14 sm:relative">
             <div className="flex flex-col h-full">
               <div className="border-b flex-shrink-0">
-                <QueueTokenTimer eventId={event.id} handle={event.handle} hasWaitingRoom={event.hasWaitingRoom} />
                 <EventInfoRow
                   handle={event.handle}
                   image={getCoverPhoto()}

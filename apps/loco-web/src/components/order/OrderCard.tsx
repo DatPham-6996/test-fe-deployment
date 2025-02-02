@@ -1,6 +1,6 @@
 'use client';
 import { OrderStatus } from '@/app/me/my-order/page';
-import { Maybe, MyOrders, Order_Status_Enum, useGetTicketIdsByOrderLazyQuery } from '@/lib/__generated__/graphql';
+import { MyOrders, useGetTicketIdsByOrderLazyQuery } from '@/lib/__generated__/graphql';
 import { MediaCollection } from '@/lib/types';
 import { formatPrice, getTicketTypeDisplay } from '@/lib/utils/format';
 import { setPreviousPage } from '@/lib/utils/previous-page';
@@ -19,10 +19,11 @@ import { OrderDetails } from './OrderDetails';
 export type OrderCardProps = {
   key: string;
   order: MyOrders;
+  orderStatus: OrderStatus;
   onTicketClick: (tickets: string[]) => void;
 };
 
-export default function OrderCard({ order, key, onTicketClick }: OrderCardProps) {
+export default function OrderCard({ order, key, orderStatus, onTicketClick }: OrderCardProps) {
   const { formatMessage } = useIntl();
   const router = useRouter();
   const { openDialog } = useResponsiveDialog();
@@ -37,21 +38,7 @@ export default function OrderCard({ order, key, onTicketClick }: OrderCardProps)
 
   if (!order) return;
 
-  const { createdAt, event, total, orderDisplayId, cartDisplayId, type, ticketTiers, status } = order;
-
-  const mapOrderStatus = (status: Maybe<string> | undefined): OrderStatus => {
-    switch (status) {
-      case Order_Status_Enum.Completed:
-        return 'COMPLETED';
-      case Order_Status_Enum.Canceled:
-        return 'CANCELED';
-      case Order_Status_Enum.Pending:
-      default:
-        return 'PENDING';
-    }
-  };
-
-  const orderStatus = mapOrderStatus(status);
+  const { createdAt, event, total, orderDisplayId, cartDisplayId, type, ticketTiers } = order;
 
   if (!event) return;
 
@@ -71,7 +58,6 @@ export default function OrderCard({ order, key, onTicketClick }: OrderCardProps)
 
   const coverImg = getCoverPhoto();
   const coverImgUrl = coverImg ? coverImg.url : '/assets/images/default.png';
-  const hasInvoice = order.invoice?.id && order.invoice?.id !== '';
 
   const onEventClick = () => {
     setPreviousPage(window.location.href);
@@ -180,9 +166,8 @@ export default function OrderCard({ order, key, onTicketClick }: OrderCardProps)
         <div className="flex gap-2 justify-between">
           {/* Left Content */}
           <div className="flex flex-col flex-1 gap-1.5 md:max-w-[420px] max-w-[calc(90%-90px)]">
-            <div className="flex flex-row gap-2">
+            <div className="flex">
               <FlipBadge variant={orderStatus}>{getOrderStatusData(orderStatus).text}</FlipBadge>
-              {hasInvoice && <FlipBadge variant="general">{formatMessage({ id: 'myOrder.invoice' })}</FlipBadge>}
             </div>
             <p className="text-lg font-bold">{event.name}</p>
             {TicketInfo()}

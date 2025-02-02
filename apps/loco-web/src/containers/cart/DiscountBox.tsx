@@ -4,11 +4,11 @@ import { toastError } from '@/lib/utils/toast';
 import { type Cart } from '@medusajs/medusa';
 import { useGateValue } from '@statsig/react-bindings';
 import { CircleCheckIcon } from 'lucide-react';
+import { useUpdateCart } from 'medusa-react';
 import { useEffect, useState } from 'react';
 import { useIntl } from 'react-intl';
 import classNames from 'classnames';
 import { DiscountCodeType } from '@/lib/utils/constants';
-import { postApplyDiscount, postRemoveDiscount } from '@/lib/api/flip-ticketing/v1/applyDiscount';
 
 export default function DiscountBox({
   cart,
@@ -24,30 +24,47 @@ export default function DiscountBox({
   const [discountCode, setDiscountCode] = useState('');
   const [isOfflineSale, setIsOfflineSale] = useState(false);
   const [isMutatingDiscount, setIsMutatingDiscount] = useState(false);
+  const updateCart = useUpdateCart(cart?.id);
   const [hasDiscount, setHasDiscount] = useState(false);
 
-  const onApplyDiscount = async () => {
+  const onApplyDiscount = () => {
     setIsMutatingDiscount(true);
-    try {
-      await postApplyDiscount(cart.id, discountCode);
-      refetchCart();
-    } catch (error) {
-      toastError(`${intl.formatMessage({ id: 'checkout.discount.discountFailure' })}`);
-      setIsMutatingDiscount(false);
-      return;
-    }
+    updateCart.mutate(
+      {
+        discounts: [
+          {
+            code: discountCode,
+          },
+        ],
+      },
+      {
+        onSuccess: () => {
+          refetchCart();
+        },
+        onError: () => {
+          toastError(`${intl.formatMessage({ id: 'checkout.discount.discountFailure' })}`);
+          setIsMutatingDiscount(false);
+        },
+      }
+    );
   };
 
-  const onRemoveDiscount = async () => {
+  const onRemoveDiscount = () => {
     setIsMutatingDiscount(true);
-    try {
-      await postRemoveDiscount(cart.id);
-      refetchCart();
-    } catch (error) {
-      toastError(`${intl.formatMessage({ id: 'checkout.discount.removeDiscountFailure' })}`);
-      setIsMutatingDiscount(false);
-      return;
-    }
+    updateCart.mutate(
+      {
+        discounts: [],
+      },
+      {
+        onSuccess: () => {
+          refetchCart();
+        },
+        onError: () => {
+          toastError(`${intl.formatMessage({ id: 'checkout.discount.removeDiscountFailure' })}`);
+          setIsMutatingDiscount(false);
+        },
+      }
+    );
   };
 
   useEffect(() => {

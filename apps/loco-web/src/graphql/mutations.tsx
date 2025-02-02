@@ -145,32 +145,3 @@ export const REQUEST_ORGANIZATION_PAYOUT_REPORT = gql(`
     }
   }
 `);
-
-export const ADD_CART_INVOICE = gql(`
-  mutation AddCartInvoice($input: AddCardInvoiceInput!){
-    addCartInvoice(input: $input) {
-      id
-      email
-      address
-      name
-      phone
-      tax_code
-    }
-  }
-`);
-
-export const REMOVE_CART_INVOICE = gql(`
-  mutation RemoveCartInvoice($input: RemoveCartInvoiceInput!) {
-    removeCartInvoice(input: $input) {
-      id
-    }
-  }
-`);
-
-export const REQUEST_ORGANIZATION_INVOICE_REPORT = gql(`
-  mutation RequestOrganizationInvoiceReport($input: RequestOrganizationInvoiceReportInput!) {
-    requestOrganizationInvoiceReport(input: $input) {
-      reportId
-    }
-  }
-`);

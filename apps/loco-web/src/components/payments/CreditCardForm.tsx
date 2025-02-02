@@ -350,7 +350,7 @@ export const CreditCardForm = ({ onPaymentClick, paymentInfo }: PaymentsProps) =
       }
 
       const completeCartRes = await completeCart();
-      if (!completeCartRes?.data?.completed_at) {
+      if (completeCartRes.type !== 'order') {
         throw new Error('Attempt to complete the cart failed');
       }
 

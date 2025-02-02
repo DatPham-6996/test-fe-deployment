@@ -14,7 +14,6 @@ type SeatReservationProps = {
   maxPrice?: number;
   isOnSale?: boolean;
   isUpcoming?: boolean;
-  hasWaitingRoom?: boolean;
 };
 
 export function TicketCardSeatReservation({
@@ -24,19 +23,12 @@ export function TicketCardSeatReservation({
   maxPrice,
   isOnSale = false,
   isUpcoming = false,
-  hasWaitingRoom = false,
 }: SeatReservationProps) {
   const router = useRouter();
   const { formatMessage } = useIntl();
   const [submitting, setSubmitting] = useState(false);
   const onClick = () => {
     setSubmitting(true);
-
-    if (hasWaitingRoom) {
-      router.push(`/waiting-room/${handle}`);
-      return;
-    }
-
     router.push(`/reservation/${handle}`);
   };
 

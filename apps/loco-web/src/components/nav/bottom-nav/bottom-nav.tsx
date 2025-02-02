@@ -1,10 +1,10 @@
-import { FlipLogo } from '@/components/icon/FlipLogo';
 import { Settings } from '@/components/settings/settings';
 import { Button } from '@/components/shadcn/ui/button';
 import { cn } from '@/lib/utils';
 import { useIsDarkTheme } from '@/state-management/hooks/useIsDarkMode';
 import { ArrowLeftRightIcon, TicketIcon } from 'lucide-react';
 import { useRouter } from 'next-nprogress-bar';
+import Image from 'next/image';
 import { useIntl } from 'react-intl';
 import { HeaderProps } from '../header/Header';
 import { ProfileDropdown } from '../header/ProfileDropdown';
@@ -35,7 +35,13 @@ export default function BottomNav({
       <nav className="flex justify-between items-center">
         <Item>
           <Button variant="ghost" onClick={() => router.push('/')} className="">
-            <FlipLogo />
+            <Image
+              src={isDarkMode ? '/icons/flip-dark.png' : '/icons/flip-light.png'}
+              alt="flip logo"
+              width={52}
+              height={52}
+              priority
+            />
           </Button>
           {/* <p className="text-xs">{formatMessage({ id: 'navBar.mobile.discover' })}</p> */}
         </Item>

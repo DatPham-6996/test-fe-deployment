@@ -17,23 +17,12 @@ export default function OrderFeedContainer({ orderStatus }: Props) {
   const { formatMessage } = useIntl();
   const [openTicketModal, setOpenTicketModal] = useState(false);
   const [ticketIds, setTicketIds] = useState<string[]>([]);
-
-  //TODO: Remove this once the backend is updated
-  const mapOrderType = (orderStatus: OrderStatus) => {
-    switch (orderStatus) {
-      case 'CANCELED':
-        return 'CANCELLED';
-      default:
-        return orderStatus;
-    }
-  };
-
   const { data, loading, error } = useMyOrderQuery({
     variables: {
       input: {
         cursor: null,
         take: 100,
-        type: mapOrderType(orderStatus),
+        type: orderStatus,
       },
     },
     fetchPolicy: 'no-cache',
@@ -70,7 +59,12 @@ export default function OrderFeedContainer({ orderStatus }: Props) {
       )}
 
       {orders.map((order: MyOrders, index: number) => (
-        <OrderCard key={order.orderId ?? order.cartId ?? String(index)} order={order} onTicketClick={viewTicket} />
+        <OrderCard
+          key={order.orderId ?? order.cartId ?? String(index)}
+          order={order}
+          orderStatus={orderStatus}
+          onTicketClick={viewTicket}
+        />
       ))}
       <TicketModalContainer ticketIds={ticketIds} isOpen={openTicketModal} onClose={() => setOpenTicketModal(false)} />
     </div>

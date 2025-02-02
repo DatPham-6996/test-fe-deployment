@@ -53,24 +53,20 @@ export default function OfflineSaleToggle() {
   const handleToggle = async (value: boolean) => {
     setEnabled(value);
     try {
-      if (!config || !currentOrganization || !currentEvent) {
-        throw new Error('Missing data');
-      }
       await upsertOrganizationCheckoutConfigs({
         variables: {
           input: {
-            eventId: currentEvent.id,
-            organizationId: currentOrganization.id,
+            eventId: currentEvent?.id ?? '',
+            organizationId: currentOrganization?.id ?? '',
             offlineSalesEnabled: value,
-            invoiceEnabled: config.invoiceEnabled,
           },
         },
       });
       await getOrganizationCheckoutConfigs();
-      toastSuccess(formatMessage({ id: 'eventSettings.updateSuccess' }));
+      toastSuccess(formatMessage({ id: 'eventSettings.offlineSale.updateSuccess' }));
     } catch (error) {
       setEnabled(!value);
-      toastError(formatMessage({ id: 'eventSettings.updateFailed' }));
+      toastError(formatMessage({ id: 'eventSettings.offlineSale.updateFailed' }));
     }
   };
 

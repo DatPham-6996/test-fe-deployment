@@ -76,15 +76,12 @@ export function useSeatReservationCheckOut() {
 
       router.push(`/checkout/${handle}/${cart.id}`);
     } catch (error: any) {
-      let errorMessage = error?.response?.data?.message ?? '';
+      const errorMessage = error?.response?.data?.message ?? '';
       if (errorMessage.includes('more than available quantity')) {
-        errorMessage = formatMessage({ id: 'seatReservation.seatNotAvailable' });
+        toastError(formatMessage({ id: 'seatReservation.seatNotAvailable' }));
+      } else {
+        toastError(error.message);
       }
-      if (errorMessage !== '') {
-        throw new Error(errorMessage);
-      }
-      throw error;
-    } finally {
       setLoading?.(false);
     }
   };

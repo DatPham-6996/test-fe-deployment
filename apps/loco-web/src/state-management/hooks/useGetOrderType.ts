@@ -14,7 +14,7 @@ export function useGetOrderType() {
           color: 'orange',
           text: formatMessage({ id: 'myOrder.pending' }),
         };
-      case 'CANCELED':
+      case 'CANCELLED':
         return {
           color: 'red',
           text: formatMessage({ id: 'myOrder.cancelled' }),

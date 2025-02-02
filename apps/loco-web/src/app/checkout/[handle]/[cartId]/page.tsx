@@ -48,8 +48,6 @@ import { isMobile } from 'react-device-detect';
 import { useIntl } from 'react-intl';
 import { PaymentButton } from './components/PaymentButton';
 import { CheckoutInfoProvider } from './components/hook/useCheckoutInfo';
-import InvoiceContainer from './containers/InvoiceContainer';
-import { QueueTokenTimer } from '@/components/timers/QueueTokenTimer';
 
 type PaymentAction = {
   action: 'AUTH';
@@ -215,8 +213,7 @@ export default function CheckoutPage() {
 
   const { mutateAsync: completeCart } = useCompleteCartWithRetry(cartId);
 
-  const isOfflineSale =
-    (cart?.discounts && cart.discounts.some((d) => d.type === DiscountCodeType.OFFLINE_SALE_CODE)) ?? false;
+  const isOfflineSale = cart?.discounts && cart.discounts.some((d) => d.type === DiscountCodeType.OFFLINE_SALE_CODE);
 
   const isFreeOrder = !isCartLoading && cart?.total === 0;
   const canBypassPayment = (bypassPaymentGate && isFreeOrder) || isOfflineSale;
@@ -398,7 +395,7 @@ export default function CheckoutPage() {
     process.env.NEXT_PUBLIC_ENV === 'production' ? ['manual'] : []
   ) as PaymentMethod[];
 
-  const timer = () => (
+  const timer = (
     <>
       {reservationSessionLoading && <Timers minutes={0} />}
       {!reservationSessionLoading && (
@@ -412,51 +409,23 @@ export default function CheckoutPage() {
       )}
     </>
   );
-  const ReservationTimerDesktop = () => {
-    if (event.hasWaitingRoom) {
-      return (
-        <QueueTokenTimer
-          eventId={event.id}
-          hasWaitingRoom={event.hasWaitingRoom}
-          handle={event.handle}
-          className="rounded-lg flex-col py-4"
-        />
-      );
-    }
+  const ReservationTimerDesktop = (
+    <Card className="sm:static md:relative">
+      <div className="flex flex-col justify-center items-center">
+        <p className="mt-1 text-sm">{intl.formatMessage({ id: 'checkout.reservation.ticketReserving' })}</p>
+        <div className="mt-3">{timer}</div>
+      </div>
+    </Card>
+  );
 
-    return (
-      <Card className="sm:static md:relative">
-        <div className="flex flex-col justify-center items-center">
-          <p className="mt-1 text-sm">{intl.formatMessage({ id: 'checkout.reservation.ticketReserving' })}</p>
-          <div className="mt-3">{timer()}</div>
-        </div>
-      </Card>
-    );
-  };
-
-  const ReservationTimerMobile = () => {
-    if (event.hasWaitingRoom) {
-      return (
-        <QueueTokenTimer
-          eventId={event.id}
-          hasWaitingRoom={event.hasWaitingRoom}
-          handle={event.handle}
-          className="sticky top-0 z-10"
-        />
-      );
-    }
-
-    return (
-      <Card className="sticky top-0 z-10 py-3 px-8 rounded-none">
-        <div className="flex flex-row items-baseline place-content-center gap-3">
-          <p className="text-base font-medium truncate">
-            {intl.formatMessage({ id: 'checkout.reservation.ticketReserving' })}
-          </p>
-          <div>{timer()}</div>
-        </div>
-      </Card>
-    );
-  };
+  const ReservationTimerMobile = (
+    <Card className="sticky top-0 z-10 py-3 px-8">
+      <div className="flex flex-row justify-between items-baseline gap-3">
+        <p className="text-sm">{intl.formatMessage({ id: 'checkout.reservation.ticketReserving' })}</p>
+        <div>{timer}</div>
+      </div>
+    </Card>
+  );
 
   const [isReceiverInfoValid, setIsReceiverInfoValid] = useState(false);
   const [agreeTerm, setAgreeTerm] = useState(true);
@@ -472,7 +441,7 @@ export default function CheckoutPage() {
         loading={isCartLoading}
       >
         <PaymentModalProvider>
-          {isMobile && <ReservationTimerMobile />}
+          {isMobile && ReservationTimerMobile}
           <ContentCenterNarrow>
             <div className="container mx-auto px-3 md:px-0">
               <div className="flex flex-col md:flex-row mt-3 sm:gap-x-3 gap-y-3 justify-center">
@@ -490,9 +459,12 @@ export default function CheckoutPage() {
                       size="medium"
                     />
                   </div>
-                  <div>
-                    {cart?.id && <ReceiverInformation cartId={cart?.id} onValidationChange={setIsReceiverInfoValid} />}
-                  </div>
+                  <div>{cart?.id && (
+                    <ReceiverInformation
+                      cartId={cart?.id}
+                      onValidationChange={setIsReceiverInfoValid}
+                    />
+                  )}</div>
 
                   {!isCartLoading && cart && (
                     <OrganizationOptions
@@ -520,21 +492,11 @@ export default function CheckoutPage() {
                       />
                     </CardBody>
                   </Card>
-
-                  {!isCartLoading && cart && (
-                    <InvoiceContainer
-                      cart={cart}
-                      organizationName={event.organization.name}
-                      eventId={event.id}
-                      organizationId={event.organization.id}
-                      isOfflineSale={isOfflineSale}
-                    />
-                  )}
                 </div>
 
                 {/* Right Content */}
                 <div className="flex flex-col gap-3 flex-1">
-                  {!isMobile && <ReservationTimerDesktop />}
+                  {!isMobile && ReservationTimerDesktop}
                   <RefundPolicy policy={event.policy} />
 
                   <Card>
@@ -558,13 +520,20 @@ export default function CheckoutPage() {
                               <div>
                                 <Checkbox checked={agreeTerm} id="terms" onClick={() => setAgreeTerm(!agreeTerm)} />
                               </div>
-                              <label htmlFor="terms" className="text-sm">
+                              <label
+                                htmlFor="terms"
+                                className="text-sm"
+                              >
                                 {intl.formatMessage({ id: 'checkout.validation.termAgreement' })}
                               </label>
                             </div>
                             <PaymentButton
                               loading={modelPaymentLoading || paymentSubmitting}
-                              disabled={(isFreeOrder && !canBypassPayment) || !isReceiverInfoValid || !agreeTerm}
+                              disabled={
+                                (isFreeOrder && !canBypassPayment) ||
+                                !isReceiverInfoValid ||
+                                !agreeTerm
+                              }
                               isDemoEvent={event.status === EventStatus.Demo}
                               onDone={() => {
                                 setModelPaymentLoading(false);

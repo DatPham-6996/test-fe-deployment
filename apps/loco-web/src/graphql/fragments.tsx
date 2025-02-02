@@ -144,7 +144,6 @@ export const EVENT_DETAILS_FRAGMENT = gql`
     }
     mediaCollection
     hasSeatMap
-    hasWaitingRoom
     maxTicketPerOrder
     status
     isMultipleDay
@@ -193,7 +192,6 @@ export const PARENT_EVENT_DETAILS_FRAGMENT = gql`
     }
     mediaCollection
     hasSeatMap
-    hasWaitingRoom
     maxTicketPerOrder
     status
     isMultipleDay

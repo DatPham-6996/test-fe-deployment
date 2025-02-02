@@ -4,7 +4,6 @@ import { RecoilWrapper } from '@/lib/recoil-wrapper';
 
 import { ResponsiveDialogProvider } from '@/components/responsive-dialog/responsive-dialog-context';
 import DatadogWrapper from '@/lib/datadog-wrapper';
-import IntercomWrapper from '@/lib/intercom-wrapper';
 import { MedusaReactWrapper } from '@/lib/medusa-react-wrapper';
 import ProgressBarProvider from '@/lib/progress-bar-wrapper';
 import { ShadcnThemeProvider } from '@/lib/shadcn-theme-wrapper';
@@ -29,7 +28,6 @@ const fontSans = FontSans({
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
   // const bootstrapValues = await generateBootstrapValues();
   const googleAnalyticsId = process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS_ID || 'G-3QE9XBLMPV';
-
   return (
     <html lang="en">
       <head>
@@ -50,17 +48,15 @@ export default async function RootLayout({ children }: { children: React.ReactNo
                         <ShadcnThemeProvider attribute={'class'} disableTransitionOnChange>
                           <AuthProvider>
                             <StatsigWrapper>
-                              <IntercomWrapper>
-                                {/* <MaintenanceCheck> */}
-                                <Suspense fallback={<AppLoading />}>
-                                  <ProgressBarProvider>
-                                    {children}
-                                    <SpeedInsights />
-                                    <ToastProvider />
-                                    <GoogleAnalytics gaId={googleAnalyticsId} />
-                                  </ProgressBarProvider>
-                                </Suspense>
-                              </IntercomWrapper>
+                              {/* <MaintenanceCheck> */}
+                              <Suspense fallback={<AppLoading />}>
+                                <ProgressBarProvider>
+                                  {children}
+                                  <SpeedInsights />
+                                  <ToastProvider />
+                                  <GoogleAnalytics gaId={googleAnalyticsId} />
+                                </ProgressBarProvider>
+                              </Suspense>
                               {/* </MaintenanceCheck> */}
                             </StatsigWrapper>
                           </AuthProvider>

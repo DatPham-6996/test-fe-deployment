@@ -38,8 +38,8 @@ export function Footer({
                 </p> */}
                 <p>
                   <span className="font-semibold">Email:</span>{' '}
-                  <a href="mailto:help@flip.vn" className="hover:underline">
-                    help@flip.vn
+                  <a href="mailto:hello@flip.vn" className="hover:underline">
+                    hello@flip.vn
                   </a>
                 </p>
                 <p>

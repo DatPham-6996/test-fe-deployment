@@ -18,7 +18,6 @@ import { Input } from '@/components/shadcn/ui/input';
 import { cn } from '@/lib/utils';
 import { formatPrice } from '@/lib/utils/format';
 import { SearchIcon, TicketIcon } from 'lucide-react';
-import { Checkbox } from '@/components/shadcn/ui/checkbox';
 
 export default function OrderListingContainer() {
   const { formatMessage } = useIntl();
@@ -51,7 +50,6 @@ export default function OrderListingContainer() {
 
   const loadNextPage = () => {
     if (pageInfo?.hasNextPage && pageInfo.endCursor) {
-      window.scrollTo(0, 0);
       setPreviousCursors(new Map(previousCursors.set(currentPage, nextCursor)));
       setCurrentPage(currentPage + 1);
       setNextCursor(pageInfo.endCursor);
@@ -148,11 +146,7 @@ function OrderTable({ orders, className }: { orders: GetOrdersResponseOrder[]; c
     return <div className="text-center py-12">{formatMessage({ id: 'payout.noTransactions' })}</div>;
   }
 
-  const formatPaymentMethod = (paymentMethod: string, total: number) => {
-    if (total === 0) {
-      return 'Offline';
-    }
-
+  const formatPaymentMethod = (paymentMethod: string) => {
     if (paymentMethod === 'card') {
       return formatMessage({ id: 'order.paymentMethod.card' });
     } else if (paymentMethod === 'virtual-account') {
@@ -187,27 +181,6 @@ function OrderTable({ orders, className }: { orders: GetOrdersResponseOrder[]; c
     }
   };
 
-  const formatInvoiceStatus = (invoiceId: string | undefined) => {
-    return <Checkbox className="cursor-auto w-5 h-5" checked={invoiceId !== undefined && invoiceId !== ''} />;
-  };
-
-  const formatAmount = (total: number, subtotal: number) => {
-    if (total === 0) {
-      return <p>{formatPrice(subtotal.toString())}</p>;
-    }
-
-    if (total < subtotal) {
-      return (
-        <div className="flex flex-col gap-1">
-          <p className="line-through">{formatPrice(subtotal.toString())}</p>
-          <p>{formatPrice(total.toString())}</p>
-        </div>
-      );
-    }
-
-    return <p>{formatPrice(total.toString())}</p>;
-  };
-
   return (
     <Table className={className}>
       <TableHeader>
@@ -215,8 +188,8 @@ function OrderTable({ orders, className }: { orders: GetOrdersResponseOrder[]; c
           <OrderTableHead title={formatMessage({ id: 'order.orderDisplayIdLabel' })} />
           <OrderTableHead title={formatMessage({ id: 'order.receiverNameLabel' })} />
           <OrderTableHead title={formatMessage({ id: 'order.paymentMethodLabel' })} />
-          <OrderTableHead title={formatMessage({ id: 'order.amountLabel' })} />
-          <OrderTableHead title={formatMessage({ id: 'order.invoiceLabel' })} />
+          <OrderTableHead title={formatMessage({ id: 'order.paidAmountLabel' })} />
+          <OrderTableHead title={formatMessage({ id: 'order.discountAmountLabel' })} />
           <OrderTableHead title={formatMessage({ id: 'order.statusLabel' })} />
           <OrderTableHead title={formatMessage({ id: 'order.createdAtLabel' })} />
         </TableRow>
@@ -230,9 +203,9 @@ function OrderTable({ orders, className }: { orders: GetOrdersResponseOrder[]; c
                 <div className="font-medium">{order.receiverEmail}</div>
                 <div>{order.receiverName}</div>
               </TableCell>
-              <TableCell width={150}>{formatPaymentMethod(order.paymentMethod, order.total)}</TableCell>
-              <TableCell width={120}>{formatAmount(order.total, order.subtotal)}</TableCell>
-              <TableCell width={120}>{formatInvoiceStatus(order.invoice?.id)}</TableCell>
+              <TableCell width={150}>{formatPaymentMethod(order.paymentMethod)}</TableCell>
+              <TableCell width={120}>{formatPrice(order.total.toString())}</TableCell>
+              <TableCell width={120}>{formatPrice(order.discountTotal.toString())}</TableCell>
               <TableCell width={120}>{formatOrderStatus(order.status)}</TableCell>
               <TableCell>{formatTimeAndDate(stringToLuxonVN(order.createdAt, locale), locale)}</TableCell>
             </TableRow>

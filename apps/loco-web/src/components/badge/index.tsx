@@ -1,4 +1,6 @@
 import { cn } from '@/lib/utils';
+;
+
 function FlipBadge({
   variant,
   bgColor,
@@ -18,9 +20,7 @@ function FlipBadge({
         'bg-green-100 border border-green-200': variant.toLowerCase() === 'completed',
         'bg-orange-100 border border-orange-100': variant.toLowerCase() === 'pending',
         'bg-red-100 border border-red-100':
-          variant.toLowerCase() === 'destructive' ||
-          variant.toLowerCase() === 'canceled',
-        'bg-transparent border border-gray-400': variant.toLowerCase() === 'general',
+          variant.toLowerCase() === 'destructive' || variant.toLowerCase() === 'cancelled',
         [`bg-${bgColor}`]: bgColor,
         className,
       })}
@@ -29,10 +29,7 @@ function FlipBadge({
         className={cn(`text-xs font-medium`, {
           'text-green-700': variant.toLowerCase() === 'completed',
           'text-orange-700': variant.toLowerCase() === 'secondary',
-          'text-red-700':
-            variant.toLowerCase() === 'destructive' ||
-            variant.toLowerCase() === 'canceled',
-          'text-black': variant.toLowerCase() === 'general',
+          'text-red-700': variant.toLowerCase() === 'destructive' || variant.toLowerCase() === 'cancelled',
           textStyle,
         })}
       >

@@ -172,7 +172,7 @@
       "sessionInvalid": "Phiên giao dịch đã hết hạn",
       "sessionInvalidDes": "Thời gian giữ vé đã hết hoặc bạn đang mua vé sự kiện này ở một cửa sổ khác.",
       "bookOtherTickets": "Đặt Vé Mới",
-      "ticketReserving": "Thời gian giữ vé còn lại",
+      "ticketReserving": "Vé của bạn được giữ trong vòng",
       "selectSeatNoteMobile": "Chạm vào sơ đồ để chọn ghế của bạn"
     },
     "ticketType": {
@@ -212,31 +212,6 @@
         "cancel": "Huỷ",
         "disable": "Đã tắt"
       }
-    },
-    "invoice": {
-      "heading": "Xuất hóa đơn",
-      "subHeading": "Yêu cầu ban tổ chức xuất hóa đơn cho đơn hàng",
-      "taxCode": "Mã số thuế",
-      "email": "Email",
-      "phone": "Số điện thoại",
-      "name": "Tên công ty",
-      "address": "Địa chỉ công ty",
-      "nameRequired": "Tên không hợp lệ",
-      "emailRequired": "Email không hợp lệ",
-      "phoneRequired": "Số điện thoại không hợp lệ",
-      "addressRequired": "Địa chỉ không hợp lệ",
-      "namePlaceholder": "Nhập họ và tên",
-      "emailPlaceholder": "Nhập email",
-      "phonePlaceholder": "Nhập số điện thoại",
-      "addressPlaceholder": "Nhập địa chỉ",
-      "taxCodePlaceholder": "Nhập mã số thuế",
-      "updateSuccess": "Đã cập nhật hóa đơn",
-      "updateFailed": "Đã có lỗi xảy ra, xin vui lòng thử lại",
-      "removeSuccess": "Đã xoá hóa đơn",
-      "edit": "Sửa hóa đơn",
-      "warning": "Thông tin hoá đơn sẽ được gửi cho {organizationName} để xử lý.",
-      "remove": "Xoá",
-      "removedForOfflineSale": "Hoá đơn đã bị xoá do không khả dụng khi thanh toán offline"
     }
   },
   "reservation": {
@@ -370,19 +345,7 @@
     "existingReservationDes": "Bạn có một đơn hàng chưa hoàn tất, bạn có muốn huỷ đơn hàng đó không?",
     "gaSectionDes": "Tới sớm để có được vị trí tốt nhất",
     "ticketTier": "Loại Vé",
-    "generalAdmission": "GENERAL ADMISSION",
-    "confirmLoading": {
-      "initial": {
-        "title": "Xin vui lòng chờ",
-        "message": "Hệ thống đang xử lý đặt chỗ...",
-        "subtitle": "Giữ nguyên trang này để đảm bảo không mất dữ liệu."
-      },
-      "error": {
-        "title": "Đã có lỗi xảy ra",
-        "message": "Đặt chỗ đang mất nhiều thời gian hơn dự kiến. Xin vui lòng thử lại.",
-        "retry": "Thử lại"
-      }
-    }
+    "generalAdmission": "GENERAL ADMISSION"
   },
   "ticketCard": {
     "priceFrom": "Giá vé từ",
@@ -432,15 +395,7 @@
     "tax": "Thuế",
     "soldOut": "Hết vé",
     "orderNumber": "Mã đơn",
-    "cartNumber": "Mã giỏ hàng",
-    "invoice": {
-      "title": "Hóa đơn",
-      "name": "Tên",
-      "phone": "Số điện thoại",
-      "email": "Email",
-      "address": "Địa chỉ",
-      "taxCode": "Mã số thuế"
-    }
+    "cartNumber": "Mã giỏ hàng"
   },
   "myOrder": {
     "title": "Đơn hàng",
@@ -458,8 +413,7 @@
     "cartNumber": "Mã giỏ",
     "order": "Đơn hàng",
     "pay": "Thanh Toán",
-    "pendingPayment": "Chờ thanh toán",
-    "invoice": "Có hóa đơn"
+    "pendingPayment": "Chờ thanh toán"
   },
   "me": {
     "tickets": {
@@ -584,9 +538,7 @@
       "support": "Hỗ trợ",
       "supportDescription": "Liên hệ ngay để được giải đáp thắc mắc",
       "organizationPayout": "Báo cáo doanh thu",
-      "organizationPayoutDescription": "Xem doanh thu của tổ chức",
-      "organizationInvoice": "Xuất hóa đơn",
-      "organizationInvoiceDescription": "Xem yêu cầu xuất hoá đơn phát sinh"
+      "organizationPayoutDescription": "Xem doanh thu của tổ chức"
     },
     "marketing": {
       "title": "Phân tích",
@@ -704,6 +656,8 @@
     "terms": "Điều khoản",
     "privacyChoices": "Lựa chọn quyền riêng tư",
     "sitemap": "Sơ đồ trang",
+    "beta_note_1": "Flip đang trong giai đoạn thử nghiệm  chờ cấp phép từ Bộ Công Thương",
+    "beta_note_2": "Mọi thông tin phản hồi vui lòng gửi tại đây",
     "companyName": "Công ty TNHH Goloco",
     "businessLicense": "Giấy chứng nhận đăng ký doanh nghiệp số",
     "firstIssuedOn": "Cấp lần đầu",
@@ -856,10 +810,7 @@
       "success": "Xuất báo cáo thành công",
       "organizationPayoutTitle": "Doanh thu tổ chức",
       "organizationPayoutDescription": "Báo cáo sẽ bao gồm doanh thu của tất cả các sự kiện trong khoảng thời gian được chọn.",
-      "organizationPayoutSelectTimeRange": "Chọn khung thời gian",
-      "organizationInvoiceTitle": "Xuất hoá đơn",
-      "organizationInvoiceDescription": "Báo cáo sẽ bao gồm hóa đơn của tất cả các sự kiện trong khoảng thời gian được chọn.",
-      "organizationInvoiceSelectTimeRange": "Chọn khung thời gian"
+      "organizationPayoutSelectTimeRange": "Chọn khung thời gian"
     }
   },
   "organization": {
@@ -958,15 +909,12 @@
   },
   "eventSettings": {
     "title": "Tuỳ chỉnh",
-    "updateSuccess": "Cập nhật thành công",
-    "updateFailed": "Cập nhật thất bại",
     "offlineSale": {
       "title": "Thanh toán Offline",
-      "description": "Tận dụng các tính năng quản lý và check-in của Flip dù không bán vé trực tiếp."
-    },
-    "invoiceRequest": {
-      "title": "Xuất hóa đơn",
-      "description": "Cho phép khách hàng yêu cầu xuất hóa đơn khi mua vé."
+      "description": "Tận dụng các tính năng quản lý và check-in của Flip dù không bán vé trực tiếp.",
+      "description2": "dù không bán vé trực tiếp.",
+      "updateSuccess": "Cập nhật thành công",
+      "updateFailed": "Cập nhật thất bại"
     }
   },
   "time": {
@@ -980,16 +928,17 @@
     "receiverNameLabel": "Người nhận",
     "receiverEmailLabel": "Email nhận",
     "paymentMethodLabel": "Thanh toán",
-    "amountLabel": "Tổng tiền",
-    "invoiceLabel": "Hoá đơn",
+    "paidAmountLabel": "Thực trả",
+    "discountAmountLabel": "Giảm giá",
     "statusLabel": "Trạng thái",
     "totalOrdersCount": "Tổng đơn hàng",
     "pendingOrdersCount": "Đang xử lý",
     "canceledOrdersCount": "Đã huỷ",
     "createdAtLabel": "Thời gian",
     "paymentMethod": {
-      "card": "Credit/Debit",
+      "card": "Thẻ Credit/Debit",
       "virtual-account": "Chuyển khoản",
+      "virtualAccount": "Chuyển khoản",
       "momo": "MoMo"
     },
     "status": {
@@ -1004,23 +953,5 @@
   "maintenance": {
     "title": "Flip sẽ sớm trở lại!",
     "description": "Flip đang thực hiện bảo trì trên trang web. Flip sẽ trở lại trực tuyến sớm. Cảm ơn bạn đã chờ đợi!"
-  },
-  "waitingRoom": {
-    "queuePositionExpires": "Thời gian đặt chỗ đã hết hạn",
-    "queuePositionExpiresDes": "Rất tiếc, thời gian đặt chỗ của bạn đã hết. Vui lòng thử lại sau ít phút.",
-    "goBack": "Quay về",
-    "inQueue": "Bạn hiện đang trong hàng chờ",
-    "queueDescription": "Khi đến lượt, bạn sẽ có 10 phút để thực hiện đặt chỗ và thanh toán.",
-    "estimatedAccessTime": "Thời gian dự kiện truy cập trang web",
-    "estimatedWaitingTime": "Thời gian chờ ước tính của bạn là",
-    "queuePosition": "Số người dùng đang xếp hàng trước bạn",
-    "lastUpdated": "Trạng thái cập nhật lần cuối",
-    "minutes": "phút",
-    "yourTurn": "Đã tới lượt của bạn!",
-    "yourTurnDescription": "Bạn có 10 phút để thực hiện đặt chỗ và thanh toán.",
-    "backButton": "Quay về",
-    "bookButton": "Đặt chỗ",
-    "accessTokenExpiresIn": "Thời gian đặt chỗ còn lại",
-    "updateNotice": "Dữ liệu đang được cập nhật liên tục"
   }
 }

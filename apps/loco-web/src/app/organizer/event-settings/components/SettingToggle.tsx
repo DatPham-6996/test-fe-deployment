@@ -15,9 +15,9 @@ export default function SettingToggle({ title, description, value, onChange, ena
       <div className="flex flex-row justify-between items-start mx-6 my-5">
         <div className="flex flex-col gap-2">
           <CardTitle>{title}</CardTitle>
-          <CardDescription className="">{description}</CardDescription>
+          <CardDescription className="w-3/4">{description}</CardDescription>
         </div>
-        <Switch className='ml-24' checked={value} onCheckedChange={onChange} disabled={!enabled} />
+        <Switch checked={value} onCheckedChange={onChange} disabled={!enabled} />
       </div>
     </Card>
   );

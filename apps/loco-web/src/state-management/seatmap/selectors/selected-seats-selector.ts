@@ -67,7 +67,7 @@ export const selectedEntitiesSelector = selectorFamily<SelectedSeatOrSection[], 
             sectionName: entityIdToSectionName.get(entityId) ?? '',
             tierName: tier.name,
             unitPrice: String(tier.price),
-            itemDetails: tier.description || '', // TODO: Add tier description
+            itemDetails: tier.metadata?.description || '', // TODO: Add tier description
             tierBackgroundColor: tier.metadata.background,
             tierBorderColor: tier.metadata.border,
             tierId: tierId,

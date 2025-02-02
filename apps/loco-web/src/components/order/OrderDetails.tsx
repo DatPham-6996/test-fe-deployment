@@ -54,12 +54,11 @@ export function OrderDetails({
   const order = data.getOrderDetails;
 
   const getPaymentMethodName = (method: PaymentMethod) => {
-    if (!method || method?.length === 0) return '_';
     return formatMessage({ id: `order.paymentMethod.${method}` });
   };
 
   return (
-    <div className="flex flex-col justify-start p-4 gap-1 overflow-y-scroll h-[80vh] sm:h-auto">
+    <div className="flex flex-col justify-start p-4 gap-1">
       <div className="flex justify-between">
         {order.status && (
           <FlipBadge variant={order.status}>
@@ -110,52 +109,21 @@ export function OrderDetails({
         );
       })}
 
-      {order.invoice && (
-        <div className="flex flex-col gap-2">
-          <Separator className="border-neutral-200 w-full my-3" />
-          <p className="text-base font-semibold">{formatMessage({ id: 'orderDetails.invoice.title' })}</p>
-          <div className="flex justify-between gap-2">
-            <p className="flex-1">{formatMessage({ id: 'orderDetails.invoice.name' })}:</p>
-            <p className="flex-1 text-end">{order.invoice.name}</p>
-          </div>
-          <div className="flex justify-between gap-2">
-            <p className="flex-1">{formatMessage({ id: 'orderDetails.invoice.phone' })}:</p>
-            <p className="flex-1 text-end">{order.invoice.phone}</p>
-          </div>
-          <div className="flex justify-between gap-2">
-            <p className="flex-1">{formatMessage({ id: 'orderDetails.invoice.email' })}:</p>
-            <p className="flex-1 text-end">{order.invoice.email}</p>
-          </div>
-          <div className="flex justify-between gap-2">
-            <p className="flex-1">{formatMessage({ id: 'orderDetails.invoice.address' })}:</p>
-            <p className="flex-1 text-end">{order.invoice.address}</p>
-          </div>
-          <div className="flex justify-between gap-2">
-            <p className="flex-1">{formatMessage({ id: 'orderDetails.invoice.taxCode' })}:</p>
-            <p className="flex-1 text-end">{order.invoice.tax_code}</p>
-          </div>
-        </div>
-      )}
-
       <Separator className="border-neutral-200 w-full my-3" />
       <div className="flex justify-between">
         <p>{formatMessage({ id: 'orderDetails.subtotal' })}:</p>
         <p>{formatPrice(String(order.subTotal === 0 ? order.total : order.subTotal))}</p>
       </div>
 
-      {order.tax && order.tax > 0 ? (
-        <div className="flex justify-between">
-          <p>{formatMessage({ id: 'orderDetails.tax' })}:</p>
-          <p>{formatPrice(String(order.tax))}</p>
-        </div>
-      ) : null}
+      {(order.tax && order.tax > 0) ? <div className="flex justify-between">
+        <p>{formatMessage({ id: 'orderDetails.tax' })}:</p>
+        <p>{formatPrice(String(order.tax))}</p>
+      </div> : null}
 
-      {order.discount && order.discount > 0 ? (
-        <div className="flex justify-between">
-          <p>{formatMessage({ id: 'orderDetails.discount' })}:</p>
-          <p>{formatPrice(String(order.discount))}</p>
-        </div>
-      ) : null}
+      {(order.discount && order.discount > 0) ? <div className="flex justify-between">
+        <p>{formatMessage({ id: 'orderDetails.discount' })}:</p>
+        <p>{formatPrice(String(order.discount))}</p>
+      </div> : null}
 
       <div className="flex justify-between">
         <p className="font-semibold">{formatMessage({ id: 'orderDetails.total' })}:</p>

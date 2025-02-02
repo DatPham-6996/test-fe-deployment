@@ -4,10 +4,12 @@ import ArtistCarouselContainer from '@/containers/artist-carousel/ArtistCarousel
 import { ContentCenterNarrow } from '@/containers/content-center/ContentCenterNarrow';
 import EventGridContainer from '@/containers/event-grid/EventGridContainer';
 import { FlipLayout } from '@/containers/flip-layout';
-import { useDynamicConfig } from '@statsig/react-bindings';
+import { useDynamicConfig, useGateValue } from '@statsig/react-bindings';
 import classNames from 'classnames';
+import { useEffect } from 'react';
 import { isDesktop } from 'react-device-detect';
 import { useIntl } from 'react-intl';
+import { toast } from 'sonner';
 import CarouselBanner from './components/carousel-banner';
 
 type Banner = {
@@ -18,6 +20,28 @@ export default function DiscoverPage() {
   const { formatMessage } = useIntl();
   const bannersConfig = useDynamicConfig('banner_carousel');
   const banners: Banner[] = bannersConfig.get('banners', []) as Banner[];
+  const isFlipTest = useGateValue('flip_prod_test');
+  const isBCT = useGateValue('bo_cong_thuong');
+  const isBCTToast = useGateValue('bo_cong_thuong_toast');
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      if (!isBCTToast) return;
+      const toastId = toast.info(formatMessage({ id: 'footer.beta_note_1' }), {
+        id: 'beta-note-1',
+        duration: Infinity,
+        className: 'text-sm pointer-events-auto',
+        action: {
+          label: formatMessage({ id: 'common.dismiss' }),
+          onClick: () => toast.dismiss(toastId),
+        },
+      });
+    }, 0);
+
+    return () => {
+      clearTimeout(timer);
+    };
+  }, [formatMessage, isBCTToast]);
 
   return (
     <div className="flex flex-col gap-6">
@@ -35,9 +59,11 @@ export default function DiscoverPage() {
         <FlipLayout headerOnly forceDarkMode={true} className="text-white relative z-10">
           <ContentCenterNarrow maxWidth={1000}>
             <div className="flex flex-col w-screen gap-4">
-              <div className="flex justify-center items-center w-full py-2 md:py-4 bg-black">
-                {banners.length > 0 && <CarouselBanner banners={banners} />}
-              </div>
+              {!isBCT && (
+                <div className="flex justify-center items-center w-full py-2 md:py-4 bg-black">
+                  {banners.length > 0 && <CarouselBanner banners={banners} />}
+                </div>
+              )}
 
               <div
                 className={classNames({
@@ -60,13 +86,15 @@ export default function DiscoverPage() {
       <FlipLayout footerOnly showLegal>
         <ContentCenterNarrow maxWidth={1000}>
           <div className="flex flex-col w-full gap-8 md:gap-12">
-            <EventGridContainer
-              sort="desc"
-              saleStatus="PAST"
-              title={formatMessage({ id: 'discovery.pastEvent' })}
-              hideIfNoResult={true}
-              hideNav={true}
-            />
+            {!isBCT && (
+              <EventGridContainer
+                sort="desc"
+                saleStatus="PAST"
+                title={formatMessage({ id: 'discovery.pastEvent' })}
+                hideIfNoResult={true}
+                hideNav={true}
+              />
+            )}
             <ArtistCarouselContainer />
           </div>
         </ContentCenterNarrow>

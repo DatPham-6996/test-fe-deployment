@@ -9,13 +9,13 @@ import { useRouter } from 'next-nprogress-bar';
 import { useEffect, useState } from 'react';
 import { useIntl } from 'react-intl';
 
-export type OrderStatus = 'ALL' | 'COMPLETED' | 'PENDING' | 'CANCELED';
+export type OrderStatus = 'ALL' | 'COMPLETED' | 'PENDING' | 'CANCELLED';
 
 export default function MyOrderPage() {
   const router = useRouter();
   const { formatMessage } = useIntl();
   const { isLoggedIn, openLoginModal } = useAuth();
-  const [orderStatus, setOrderStatus] = useState<OrderStatus>('ALL');
+  const [orderStatus, setOrderStatus] = useState<OrderStatus>('COMPLETED');
 
   useEffect(() => {
     if (!isLoggedIn) {
@@ -30,15 +30,15 @@ export default function MyOrderPage() {
 
   const OrderTypeSegment = (
     <Tabs
-      defaultValue="ALL"
+      defaultValue="COMPLETED"
       onValueChange={onValueChange}
       className="space-y-4 border border-neutral-300 rounded-lg p-[0.5]"
     >
       <TabsList className="bg-zinc-200">
-        <TabsTrigger value="ALL">{formatMessage({ id: 'myOrder.all' })}</TabsTrigger>
+        {/* <TabsTrigger value="ALL">{formatMessage({ id: 'myOrder.all' })}</TabsTrigger> */}
         <TabsTrigger value="COMPLETED">{formatMessage({ id: 'myOrder.completed' })}</TabsTrigger>
         <TabsTrigger value="PENDING">{formatMessage({ id: 'myOrder.pending' })}</TabsTrigger>
-        <TabsTrigger value="CANCELED">{formatMessage({ id: 'myOrder.cancelled' })}</TabsTrigger>
+        <TabsTrigger value="CANCELLED">{formatMessage({ id: 'myOrder.cancelled' })}</TabsTrigger>
       </TabsList>
     </Tabs>
   );

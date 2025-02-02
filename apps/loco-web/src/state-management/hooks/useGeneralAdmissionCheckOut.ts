@@ -54,15 +54,12 @@ export function useGeneralAdmissionCheckout() {
 
       router.push(`/checkout/${handle}/${cart.id}`);
     } catch (error: any) {
-      let errorMessage = error?.response?.data?.message ?? '';
+      const errorMessage = error?.response?.data?.message ?? '';
       if (errorMessage.includes('more than available quantity')) {
-        errorMessage = formatMessage({ id: 'eventDetail.ticketAvailableExceeded' });
+        toastError(formatMessage({ id: 'eventDetail.ticketAvailableExceeded' }));
+      } else {
+        toastError(error.message);
       }
-      if (errorMessage !== '') {
-        throw new Error(errorMessage);
-      }
-      throw error;
-    } finally {
       setLoading?.(false);
     }
   };

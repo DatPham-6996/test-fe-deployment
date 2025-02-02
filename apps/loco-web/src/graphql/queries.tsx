@@ -66,15 +66,11 @@ export const ORDER_FEED_QUERY = gql`
         type
         orderId
         createdAt
-        status
         ticketTiers {
           id
           name
           quantity
           __typename
-        }
-        invoice {
-          id
         }
       }
       pageInfo {
@@ -106,6 +102,9 @@ export const ORDER_DETAILS_QUERY = gql`
         quantity
         __typename
       }
+      event {
+        ...OrderCard_event
+      }
       discount
       email
       fee
@@ -115,13 +114,6 @@ export const ORDER_DETAILS_QUERY = gql`
       taxRate
       payment {
         provider
-      }
-      invoice {
-        name
-        address
-        phone
-        tax_code
-        email
       }
     }
   }
@@ -211,7 +203,6 @@ export const GET_MY_EVENTS = gql`
         venueId
         status
         hasSeatMap
-        hasWaitingRoom
         maxTicketPerOrder
         isMultipleDay
         isParentEvent
@@ -488,7 +479,6 @@ const GET_ORGANIZATION_CHECKOUT_CONFIGS = gql(`
     organizationCheckoutConfigs(input: $input) {
       offlineSalesEnabled
       isShowCheckoutOptions
-      invoiceEnabled
     }
   }
 `);
@@ -601,9 +591,6 @@ export const GET_EVENT_ORDERS = gql(`
         subtotal
         receiverEmail
         receiverName
-        invoice {
-          id
-        }
       }
     }
   }
@@ -654,7 +641,6 @@ export const GET_EVENT_BY_ID = gql`
       onsale
       offsale
       hasSeatMap
-      hasWaitingRoom
       maxTicketPerOrder
       isMultipleDay
       isParentEvent
@@ -753,20 +739,6 @@ export const ORGANIZATION_REPORT_STATUS = gql(`
       status
       reportId
       downloadUrl
-    }
-  }
-`);
-
-
-export const GET_CART_INVOICE = gql(`
-  query GetCartInvoice($input: GetCartInvoiceInput!) {
-    cartInvoice(input: $input) {
-      id
-      name
-      email
-      phone
-      address
-      tax_code
     }
   }
 `);

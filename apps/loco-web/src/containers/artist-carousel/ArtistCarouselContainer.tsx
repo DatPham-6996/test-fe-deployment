@@ -1,5 +1,5 @@
 import { Badge } from '@/components/shadcn/ui/badge';
-import { Carousel, CarouselContent, CarouselItem, CarouselNumberNav } from '@/components/shadcn/ui/carousel';
+import { Carousel, CarouselContent, CarouselItem } from '@/components/shadcn/ui/carousel';
 import { SkeletonCard } from '@/components/skeletons/SkeletonCard';
 import { FlipArtist } from '@/lib/__generated__/graphql';
 import { cn } from '@/lib/utils';
@@ -69,7 +69,6 @@ export default function ArtistCarouselContainer() {
             {/* <Link href="/artists" className="text-gray-600 hover:underline">
                             Xem thêm
                         </Link> */}
-            <CarouselNumberNav />
           </div>
           <CarouselContent className="-ml-4">
             {loading

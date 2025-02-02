@@ -23,7 +23,6 @@
     "@graphql-typed-document-node/core": "3.2.0",
     "@hookform/resolvers": "^3.3.4",
     "@icons-pack/react-simple-icons": "^9.5.0",
-    "@intercom/messenger-js-sdk": "^0.0.14",
     "@next/env": "14.1.4",
     "@next/third-parties": "^14.2.5",
     "@radix-ui/colors": "3.0.0",

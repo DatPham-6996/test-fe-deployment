@@ -1,4 +1,3 @@
-import { FlipLogo } from '@/components/icon/FlipLogo';
 import { Settings } from '@/components/settings/settings';
 import { Button } from '@/components/shadcn/ui/button';
 import { Separator } from '@/components/shadcn/ui/separator';
@@ -8,6 +7,7 @@ import classnames from 'classnames';
 import { User as FirebaseUser } from 'firebase/auth';
 import { ArrowLeftRightIcon, TicketIcon } from 'lucide-react';
 import { useRouter } from 'next-nprogress-bar';
+import Image from 'next/image';
 import Link from 'next/link';
 import { useIntl } from 'react-intl';
 import { ProfileDropdown } from './ProfileDropdown';
@@ -55,6 +55,10 @@ export default function Header({
     isDarkMode = true;
   }
 
+  const Logo = (
+    <Image src={isDarkMode ? '/icons/flip-dark.png' : '/icons/flip-light.png'} alt="flip logo" width={62} height={56} />
+  );
+
   return (
     <header
       className={classnames('flex flex-col justify-center items-center w-full bg-transparent bg-opacity-80 shadow-sm', {
@@ -64,7 +68,7 @@ export default function Header({
       <div className={classnames('flex h-14 justify-between px-4 py-4 w-full max-w-[1200px]', className)}>
         <div className="flex md:gap-6 gap-4 items-center justify-center">
           <Link href={'/'} className="mb-2">
-            <FlipLogo width={62} height={62} />
+            {Logo}
           </Link>
 
           {isLoggedIn && (

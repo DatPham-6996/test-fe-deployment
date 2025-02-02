@@ -1,10 +1,9 @@
-import { formatPrice } from '@/lib/utils/format';
+import { useIntl } from 'react-intl';
 import classNames from 'classnames';
 import { motion } from 'framer-motion';
+import { formatPrice } from '@/lib/utils/format';
 import { Trash2Icon } from 'lucide-react';
-import { useState } from 'react';
-import { useIntl } from 'react-intl';
-import Markdown from 'react-markdown';
+import { Warning } from '../icon/Warning';
 import { Separator } from '../shadcn/ui/separator';
 
 type SeatItemProps = {
@@ -41,7 +40,6 @@ const SelectedEntityItem = ({
   sectionName,
 }: SeatItemProps) => {
   const { formatMessage } = useIntl();
-  const [showDetails, setShowDetails] = useState(true);
 
   function SeatColumnItem(label: string, value: string, className?: string) {
     return (
@@ -58,8 +56,6 @@ const SelectedEntityItem = ({
       initial={{ opacity: 0.75, scale: 0.85, translateY: '20%' }}
       animate={{ opacity: 1, scale: 1, translateY: '0' }}
       whileHover={{ scale: 1.05 }}
-      onClick={() => setShowDetails(!showDetails)}
-      className='hover:cursor-pointer'
     >
       <div className="flex flex-row sm:flex-col w-full py-3 bg-white dark:bg-muted rounded-md border">
         <div className="flex grow basis-2 sm:flex-1 flex-col border-r sm:border-none">
@@ -94,7 +90,7 @@ const SelectedEntityItem = ({
               <div className="flex flex-row gap-2 place-content-between mt-2 px-5">
                 {SeatColumnItem(
                   formatMessage({ id: 'seatReservation.section' }).toUpperCase() +
-                  ` (${formatMessage({ id: 'seatReservation.generalAdmission' }).toUpperCase()})`,
+                    ` (${formatMessage({ id: 'seatReservation.generalAdmission' }).toUpperCase()})`,
                   sectionName || '-',
                   'items-start'
                 )}
@@ -104,15 +100,12 @@ const SelectedEntityItem = ({
 
           <Separator className="hidden sm:block my-3 dark:bg-slate-600" />
 
-          {itemDetails && showDetails && (
-            <div>
-              <div className="px-4 py-2 text-xs">
-                <Markdown>{itemDetails}</Markdown>
-              </div>
-              <Separator className="hidden sm:block my-3 dark:bg-slate-600" />
+          {itemDetails && (
+            <div className="flex items-start gap-1 px-5">
+              <Warning className="h-2 w-2 relative" />
+              <p className="text-[11px] font-normal">{itemDetails}</p>
             </div>
           )}
-
         </div>
 
         <div className="flex basis-1 flex-col sm:flex-row items-end sm:items-center justify-start place-content-between px-5">
