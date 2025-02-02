@@ -1,4 +1,4 @@
-# Golocoo
+# Golocooo
 
 A monorepo using pnpm workspace
 
